@@ -192,6 +192,7 @@
 
     <script>
         const IP = "invest.minekeep.gg";
+        const FIREBASE_URL = "https://investsmp-default-rtdb.firebaseio.com/players.json";
         let historyData = JSON.parse(localStorage.getItem('is_hist')) || [];
         let activeChart = null;
 
@@ -210,19 +211,17 @@
 
         async function checkServer() {
             try {
-                const res = await fetch(`https://api.minetools.eu/ping/${IP}/25565?t=${Date.now()}`);
+                // Fetch directly from your Firebase bridge
+                const res = await fetch(`${FIREBASE_URL}?t=${Date.now()}`);
                 const data = await res.json();
                 
-                let count = 0;
-                if (data.players) {
-                    count = data.players.online;
-                }
-
+                let count = data ? (data.count || 0) : 0;
                 const countElement = document.getElementById('player-count');
                 const lastCount = parseInt(countElement.textContent) || 0;
                 
                 countElement.textContent = count;
 
+                // Update graph ONLY when the count actually changes
                 if (count !== lastCount) {
                     const time = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', second: '2-digit' });
                     historyData.push({ t: time, p: count });
@@ -230,7 +229,9 @@
                     localStorage.setItem('is_hist', JSON.stringify(historyData));
                     if(document.getElementById('stats').classList.contains('active')) renderGraph();
                 }
-            } catch(e) {}
+            } catch(e) {
+                console.error("Firebase Bridge Offline");
+            }
         }
 
         function renderGraph() {
@@ -273,6 +274,7 @@
             stars.appendChild(s);
         }
 
+        // Check every second
         setInterval(checkServer, 1000);
         checkServer();
     </script>
