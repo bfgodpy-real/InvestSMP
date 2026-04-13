@@ -21,8 +21,10 @@
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Montserrat', sans-serif; scroll-behavior: smooth; }
         body { background: #000; color: white; overflow-x: hidden; }
 
+        /* Star Background */
         #star-canvas { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; z-index: -1; pointer-events: none; }
 
+        /* Custom Notification */
         #notif-container {
             position: fixed; top: -100px; left: 50%; transform: translateX(-50%);
             background: var(--gold-grad); color: black; padding: 12px 30px; border-radius: 50px;
@@ -31,6 +33,7 @@
         }
         #notif-container.active { top: 30px; }
 
+        /* Navigation */
         nav {
             position: fixed; top: 0; width: 100%; padding: 25px 50px;
             display: flex; justify-content: space-between; align-items: center;
@@ -51,6 +54,7 @@
         }
         nav ul li a:hover { opacity: 1; color: var(--gold); }
 
+        /* Sections */
         section { display: none; padding: 160px 20px 80px; max-width: 1200px; margin: 0 auto; min-height: 100vh; }
         section.active { display: block; animation: slideUp 0.8s ease forwards; }
         @keyframes slideUp { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
@@ -64,11 +68,13 @@
         }
         .tagline { font-size: 1.2rem; font-weight: 800; letter-spacing: 8px; margin-bottom: 40px; color: #ccc; text-transform: uppercase; }
 
+        /* Animated Buttons */
         .cta-group { display: flex; gap: 20px; justify-content: center; flex-wrap: wrap; margin-bottom: 60px; }
         .btn { 
             position: relative; width: 300px; padding: 18px 0; border-radius: 8px; 
-            font-weight: 800; cursor: pointer; transition: 0.4s; 
+            font-weight: 800; cursor: pointer; transition: 0.4s cubic-bezier(0.4, 0, 0.2, 1); 
             font-size: 1rem; text-transform: uppercase; text-align: center; border: 2px solid transparent;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
         }
         .btn-gold { background: var(--gold-grad); color: black; border-color: var(--gold); }
         .btn-gold:hover { background: transparent; color: var(--gold); transform: translateY(-5px); box-shadow: 0 10px 25px var(--gold-glow); }
@@ -76,19 +82,29 @@
         .btn-discord { background: var(--discord); color: white; border-color: var(--discord); }
         .btn-discord:hover { background: transparent; color: var(--discord); transform: translateY(-5px); box-shadow: 0 10px 25px rgba(88, 101, 242, 0.4); }
 
+        .btn .hover-text { display: none; letter-spacing: 1px; }
+        .btn:hover .default-text { display: none; }
+        .btn:hover .hover-text { display: inline; }
+
+        /* Grid Boxes */
         .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(350px, 1fr)); gap: 30px; }
         .box { 
             background: var(--dark-grad); border: 1px solid rgba(212, 175, 55, 0.2); 
             padding: 45px; border-radius: 15px; transition: 0.4s;
+            position: relative; overflow: hidden;
         }
-        .box:hover { border-color: var(--gold); transform: translateY(-10px); }
+        .box:hover { border-color: var(--gold); transform: translateY(-10px); box-shadow: 0 15px 40px rgba(0,0,0,0.5); }
+        .box h3 { color: var(--gold); font-family: 'Cinzel'; margin-bottom: 15px; font-size: 1.8rem; }
+        .box p { color: #aaa; line-height: 1.8; font-size: 1.05rem; }
 
+        /* Player List */
         .player-list { display: flex; flex-wrap: wrap; gap: 15px; justify-content: center; margin-top: 30px; }
         .player-head { 
             display: flex; align-items: center; gap: 12px; background: rgba(255,255,255,0.03); 
             padding: 10px 20px; border-radius: 50px; border: 1px solid rgba(255,255,255,0.1); 
             font-weight: 700; transition: 0.3s;
         }
+        .player-head:hover { background: rgba(212, 175, 55, 0.1); border-color: var(--gold); transform: scale(1.1); }
         .player-head img { width: 32px; height: 32px; image-rendering: pixelated; border-radius: 4px; }
 
         .online-dot { 
@@ -100,10 +116,11 @@
 
         .chain-divider {
             height: 40px; background-image: url('https://www.transparentpng.com/download/gold-chain/EY6HlV-gold-chain-transparent-image.png');
-            background-repeat: repeat-x; background-size: contain; margin: 60px 0; opacity: 0.6;
+            background-repeat: repeat-x; background-size: contain; filter: drop-shadow(0 0 8px var(--gold-glow));
+            margin: 60px 0; opacity: 0.6;
         }
 
-        footer { text-align: center; padding: 60px 20px; font-size: 0.9rem; color: #555; }
+        footer { text-align: center; padding: 60px 20px; font-size: 0.9rem; color: #555; letter-spacing: 1px; }
         footer span { color: var(--gold); font-weight: 800; }
     </style>
 </head>
@@ -130,53 +147,94 @@
             <div class="tagline">Survival • Economy • PvP</div>
             
             <div class="cta-group">
-                <div class="btn btn-gold" onclick="copyIP()">IP - Copy</div>
-                <div class="btn btn-discord" onclick="redirectConfirm('https://discord.gg/rKyumcXBCf', 'Discord')">Discord</div>
+                <div class="btn btn-gold" onclick="copyIP()">
+                    <span class="default-text">IP - Copy</span>
+                    <span class="hover-text">INVEST.MINEKEEP.GG</span>
+                </div>
+                <div class="btn btn-discord" onclick="redirectConfirm('https://discord.gg/rKyumcXBCf', 'Discord')">
+                    <span class="default-text">Discord</span>
+                    <span class="hover-text">JOIN THE COMMUNITY</span>
+                </div>
             </div>
 
             <div class="grid">
-                <div class="box"><h3>Survival</h3><p>Build your legacy in a competitive world.</p></div>
-                <div class="box"><h3>Economy</h3><p>Trade stocks and dominate the market.</p></div>
+                <div class="box">
+                    <h3>Survival</h3>
+                    <p>Jump into classic survival with a fresh spin. Build your legacy, team up with friends, and take on the wilderness together.</p>
+                </div>
+                <div class="box">
+                    <h3>Economy</h3>
+                    <p>Take control of the market with our personalized stock system. Grow your wealth, and climb to the top of the leaderboard.</p>
+                </div>
             </div>
 
             <div class="chain-divider"></div>
+
             <h3 style="font-family: 'Cinzel'; color: var(--gold); margin-bottom: 30px; font-size: 2rem;">Current Online</h3>
             <div id="pl-list" class="player-list"></div>
         </div>
     </section>
 
     <section id="stats">
-        <h2 style="font-family:'Cinzel'; color:var(--gold); text-align:center; margin-bottom: 40px; font-size: 3rem;">Live Economy Graph</h2>
-        <div class="box" style="height: 500px; padding: 20px; border: 1px solid rgba(212,175,55,0.4);">
+        <h2 style="font-family:'Cinzel'; color:var(--gold); text-align:center; margin-bottom: 40px; font-size: 3rem;">Live Player Growth</h2>
+        <div class="box" style="height: 500px; padding: 20px; border: 1px solid rgba(212, 175, 55, 0.4);">
             <canvas id="ch"></canvas>
         </div>
     </section>
 
-    <footer>OWNED BY <span>DUUCKSTER</span> &nbsp; | &nbsp; CRAFTED BY <span>BFGODPY</span></footer>
+    <footer>
+        OWNED BY <span>DUUCKSTER</span> &nbsp; | &nbsp; CRAFTED BY <span>BFGODPY</span>
+    </footer>
 
     <script>
-        // Starfield Logic
+        // High-Visibility Starfield Engine
         const canvas = document.getElementById('star-canvas');
         const ctx = canvas.getContext('2d');
-        let w, h, stars = [];
+        let w, h, stars = [], targetSpeed = 0.8, speedMult = 0.8;
+
         function initCanvas() {
-            w = canvas.width = window.innerWidth; h = canvas.height = window.innerHeight;
-            stars = []; for(let i=0; i<250; i++) stars.push({ x: Math.random()*w-w/2, y: Math.random()*h-h/2, z: Math.random()*w, o: Math.random() });
-        }
-        function updateStars() {
-            ctx.fillStyle = '#000'; ctx.fillRect(0,0,w,h);
-            ctx.translate(w/2, h/2);
-            for(let s of stars) {
-                s.z -= 0.8; if(s.z <= 0) s.z = w;
-                let sx = s.x / (s.z / w), sy = s.y / (s.z / w);
-                ctx.beginPath(); ctx.fillStyle = `rgba(212, 175, 55, ${s.o})`;
-                ctx.arc(sx, sy, 1.5 * (1-s.z/w), 0, Math.PI*2); ctx.fill();
+            w = canvas.width = window.innerWidth; 
+            h = canvas.height = window.innerHeight;
+            stars = []; 
+            for(let i=0; i<300; i++) {
+                stars.push({ 
+                    x: Math.random() * w - w/2, 
+                    y: Math.random() * h - h/2, 
+                    z: Math.random() * w, 
+                    o: Math.random() * 0.5 + 0.5,
+                    size: Math.random() * 1.5 + 0.5
+                });
             }
-            ctx.setTransform(1,0,0,1,0,0); requestAnimationFrame(updateStars);
+        }
+        window.addEventListener('resize', initCanvas);
+
+        function updateStars() {
+            ctx.fillStyle = '#000'; 
+            ctx.fillRect(0,0,w,h);
+            speedMult += (targetSpeed - speedMult) * 0.05;
+            ctx.translate(w/2, h/2);
+            
+            for(let s of stars) {
+                s.z -= speedMult; 
+                if(s.z <= 0) s.z = w;
+                
+                let sx = s.x / (s.z / w);
+                let sy = s.y / (s.z / w);
+                let size = s.size * (1 - s.z / w) * 2.5;
+                
+                ctx.beginPath(); 
+                ctx.fillStyle = `rgba(212, 175, 55, ${s.o})`; 
+                ctx.arc(sx, sy, size, 0, Math.PI * 2);
+                ctx.fill();
+            }
+            ctx.setTransform(1,0,0,1,0,0); 
+            requestAnimationFrame(updateStars);
         }
 
-        // Tab and Logic
         function tab(t) {
+            targetSpeed = 4.0; // "Warp" speed during tab change
+            setTimeout(() => targetSpeed = 0.8, 500);
+
             document.querySelectorAll('section').forEach(s => s.classList.remove('active'));
             document.getElementById(t).classList.add('active');
             if(t === 'stats') setTimeout(drawChart, 100);
@@ -190,48 +248,50 @@
         }
 
         function redirectConfirm(url, name) {
-            if (confirm(`Open ${name}?`)) { window.open(url, "_blank"); }
+            if (confirm(`Open ${name} in a new tab?`)) { window.open(url, "_blank"); }
         }
 
-        // Graph Logic
-        let hist = JSON.parse(localStorage.getItem('smphist_v10')) || [];
+        let hist = JSON.parse(localStorage.getItem('smphist_v11')) || [];
         
         async function updateData() {
             try {
                 const r = await fetch('https://api.mcsrvstat.us/3/invest.minekeep.gg');
                 const d = await r.json();
                 let listArray = (d.players && d.players.list) ? d.players.list : [];
-                let currentOnline = listArray.length;
-                document.getElementById('pc').innerText = currentOnline;
+                let currentCount = listArray.length;
 
-                // Update Player List Visuals
+                document.getElementById('pc').innerText = currentCount;
+
                 const listContainer = document.getElementById('pl-list');
                 listContainer.innerHTML = '';
                 listArray.forEach(p => {
-                    const name = p.name || p;
-                    listContainer.innerHTML += `<div class="player-head"><img src="https://minotar.net/helm/${name}/32"><span>${name}</span></div>`;
+                    const name = p.name || p; 
+                    listContainer.innerHTML += `
+                        <div class="player-head">
+                            <img src="https://minotar.net/helm/${name}/32" alt="">
+                            <span>${name}</span>
+                        </div>`;
                 });
 
-                // ONLY UPDATE GRAPH IF DATA IS DIFFERENT FROM THE LAST POINT
-                let lastPoint = hist.length > 0 ? hist[hist.length - 1].p : -1;
-
-                if (currentOnline !== lastPoint) {
+                // GRAPH LOGIC: Only add if count is different
+                let lastRecordedCount = hist.length > 0 ? hist[hist.length - 1].p : -1;
+                
+                if (currentCount !== lastRecordedCount) {
                     const now = new Date().toLocaleTimeString([], {hour:'2-digit', minute:'2-digit', second:'2-digit'});
-                    hist.push({t: now, p: currentOnline});
-                    if(hist.length > 30) hist.shift(); // Keep last 30 changes
-                    localStorage.setItem('smphist_v10', JSON.stringify(hist));
+                    hist.push({t: now, p: currentCount});
+                    if(hist.length > 30) hist.shift();
+                    localStorage.setItem('smphist_v11', JSON.stringify(hist));
                     if(document.getElementById('stats').classList.contains('active')) drawChart();
                 }
-            } catch(e) { console.warn("Fetch failed"); }
+            } catch(e) { console.warn("API Error"); }
         }
 
         function drawChart() {
             const chartCtx = document.getElementById('ch').getContext('2d');
             if(window.myChart) window.myChart.destroy();
-            
-            // Create Gradient
+
             let grad = chartCtx.createLinearGradient(0, 0, 0, 400);
-            grad.addColorStop(0, 'rgba(212, 175, 55, 0.4)');
+            grad.addColorStop(0, 'rgba(212, 175, 55, 0.3)');
             grad.addColorStop(1, 'rgba(0, 0, 0, 0)');
 
             window.myChart = new Chart(chartCtx, {
@@ -244,7 +304,7 @@
                         borderWidth: 3, 
                         pointBackgroundColor: '#D4AF37',
                         pointRadius: 4,
-                        tension: 0, // CRITICAL: This makes the lines straight
+                        tension: 0, // STRAIGHT LINES
                         fill: true, 
                         backgroundColor: grad 
                     }]
@@ -253,15 +313,8 @@
                     responsive: true, maintainAspectRatio: false,
                     plugins: { legend: { display: false } },
                     scales: { 
-                        y: { 
-                            beginAtZero: true, 
-                            ticks: { color: '#888', stepSize: 1 }, 
-                            grid: { color: 'rgba(255,255,255,0.05)' } 
-                        }, 
-                        x: { 
-                            ticks: { color: '#888' }, 
-                            grid: { display: false } 
-                        } 
+                        y: { beginAtZero: true, ticks: { color: '#666', stepSize: 1 }, grid: { color: 'rgba(255,255,255,0.05)' } }, 
+                        x: { ticks: { color: '#666' }, grid: { display: false } } 
                     }
                 }
             });
@@ -270,7 +323,7 @@
         initCanvas();
         updateStars();
         updateData();
-        setInterval(updateData, 15000); // Check every 15 seconds
+        setInterval(updateData, 20000);
     </script>
 </body>
 </html>
