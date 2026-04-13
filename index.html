@@ -65,18 +65,9 @@
         /* --- BUTTONS --- */
         .cta-group { display: flex; gap: 15px; justify-content: center; flex-wrap: wrap; margin-bottom: 50px; }
         .btn { 
-            position: relative;
-            width: 280px;
-            padding: 16px 0;
-            border-radius: 4px; 
-            font-weight: 800; 
-            cursor: pointer; 
-            transition: 0.3s; 
-            font-size: 1rem;
-            text-transform: uppercase;
-            text-align: center;
-            overflow: hidden;
-            border: 2px solid transparent;
+            position: relative; width: 280px; padding: 16px 0; border-radius: 4px; 
+            font-weight: 800; cursor: pointer; transition: 0.3s; font-size: 1rem;
+            text-transform: uppercase; text-align: center; overflow: hidden; border: 2px solid transparent;
         }
 
         .btn-gold { background: var(--gold-grad); color: black; border-color: var(--gold); }
@@ -95,6 +86,7 @@
         .box h3 { color: var(--gold); font-family: 'Cinzel'; margin-bottom: 12px; font-size: 1.5rem; }
         .box p { color: #bbb; line-height: 1.7; font-size: 1rem; }
 
+        /* --- PLAYERS --- */
         .player-list { display: flex; flex-wrap: wrap; gap: 12px; justify-content: center; margin-top: 25px; }
         .player-head { display: flex; align-items: center; gap: 10px; background: rgba(255,255,255,0.05); padding: 8px 15px; border-radius: 6px; border: 1px solid #333; font-weight: 600; font-size: 0.9rem; }
         .player-head img { width: 28px; height: 28px; image-rendering: pixelated; }
@@ -119,7 +111,7 @@
         <ul>
             <li><a onclick="tab('home')">Home</a></li>
             <li><a onclick="tab('stats')">Stats</a></li>
-            <li><a onclick="shopRedirect('https://investsmp.tebex.io/', 'webstore')">Shop</a></li>
+            <li><a onclick="redirectConfirm('https://investsmp.tebex.io/', 'webstore')">Shop</a></li>
         </ul>
     </nav>
 
@@ -134,7 +126,7 @@
                     <span class="default-text">IP - Copy</span>
                     <span class="hover-text">INVEST.MINEKEEP.GG</span>
                 </div>
-                <div class="btn btn-discord" onclick="shopRedirect('https://discord.gg/rKyumcXBCf', 'Discord')">
+                <div class="btn btn-discord" onclick="redirectConfirm('https://discord.gg/rKyumcXBCf', 'Discord')">
                     <span class="default-text">Discord</span>
                     <span class="hover-text">DISCORD.GG/RKYUMCXBCF</span>
                 </div>
@@ -143,11 +135,11 @@
             <div class="grid">
                 <div class="box">
                     <h3>Survival</h3>
-                    <p>Play normal survival with friends. Build bases, gather resources, and explore the world.</p>
+                    <p>Standard survival gameplay with a focused community. Build your base and grow your wealth.</p>
                 </div>
                 <div class="box">
                     <h3>Economy</h3>
-                    <p>Use our stock market system to trade and make money. Buy and sell to become the richest player.</p>
+                    <p>Trade in the stock market to earn money. Compete to see who can become the top investor.</p>
                 </div>
             </div>
 
@@ -208,7 +200,7 @@
             n.classList.add('active'); setTimeout(() => n.classList.remove('active'), 2500);
         }
 
-        function shopRedirect(url, name) {
+        function redirectConfirm(url, name) {
             if (confirm(`Do you want to leave this page to go to our ${name}?`)) {
                 window.open(url, "_blank");
             }
@@ -217,35 +209,39 @@
         function ignite() { targetSpeed = 160; setTimeout(() => targetSpeed = 1, 1000); }
 
         let lastCount = -1;
-        let hist = JSON.parse(localStorage.getItem('smphist_v3')) || [];
+        let hist = JSON.parse(localStorage.getItem('smphist_v4')) || [];
         
         async function updateData() {
             try {
-                const r = await fetch('https://api.mcstatus.io/v2/status/java/invest.minekeep.gg');
+                // Now using mcsrvstat.us API
+                const r = await fetch('https://api.mcsrvstat.us/3/invest.minekeep.gg');
                 const d = await r.json();
+                
                 const count = d.players ? d.players.online : 0;
                 document.getElementById('pc').innerText = count;
 
                 const list = document.getElementById('pl-list');
                 list.innerHTML = '';
+                
+                // mcsrvstat returns players in d.players.list
                 if(d.players && d.players.list) {
                     d.players.list.forEach(p => {
                         const name = p.name || p; 
                         list.innerHTML += `<div class="player-head"><img src="https://minotar.net/helm/${name}/32" alt="">${name}</div>`;
                     });
                 } else if(count > 0) {
-                    list.innerHTML = `<p style="color:#555">Player list is hidden by server.</p>`;
+                    list.innerHTML = `<p style="color:#555">Names are private or proxy-hidden.</p>`;
                 }
 
                 if (count !== lastCount) {
                     const now = new Date().toLocaleTimeString([], {hour:'2-digit', minute:'2-digit'});
                     hist.push({t: now, p: count});
                     if(hist.length > 25) hist.shift();
-                    localStorage.setItem('smphist_v3', JSON.stringify(hist));
+                    localStorage.setItem('smphist_v4', JSON.stringify(hist));
                     lastCount = count;
                     if(document.getElementById('stats').classList.contains('active')) drawChart();
                 }
-            } catch(e) { console.warn("API error"); }
+            } catch(e) { console.warn("API Error"); }
         }
 
         function drawChart() {
@@ -271,7 +267,7 @@
 
         initCanvas();
         updateStars();
-        setInterval(updateData, 10000);
+        setInterval(updateData, 15000);
         updateData();
     </script>
 </body>
