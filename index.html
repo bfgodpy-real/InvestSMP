@@ -210,15 +210,23 @@
 
         async function checkServer() {
             try {
-                const res = await fetch(`https://api.mcstatus.io/v2/status/java/${IP}?nocache=${Date.now()}`);
+                const res = await fetch(`https://api.minetools.eu/ping/${IP}/25565?t=${Date.now()}`);
                 const data = await res.json();
-                const count = data.online ? data.players.online : 0;
-                document.getElementById('player-count').textContent = count;
+                
+                let count = 0;
+                if (data.players) {
+                    count = data.players.online;
+                }
 
-                const time = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
-                if (historyData.length === 0 || count !== historyData[historyData.length - 1].p) {
+                const countElement = document.getElementById('player-count');
+                const lastCount = parseInt(countElement.textContent) || 0;
+                
+                countElement.textContent = count;
+
+                if (count !== lastCount) {
+                    const time = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', second: '2-digit' });
                     historyData.push({ t: time, p: count });
-                    if(historyData.length > 24) historyData.shift();
+                    if(historyData.length > 50) historyData.shift();
                     localStorage.setItem('is_hist', JSON.stringify(historyData));
                     if(document.getElementById('stats').classList.contains('active')) renderGraph();
                 }
@@ -235,7 +243,9 @@
                     datasets: [{
                         data: historyData.map(d => d.p),
                         borderColor: '#D4AF37',
-                        tension: 0.3,
+                        pointBackgroundColor: '#FFD700',
+                        pointRadius: 4,
+                        tension: 0,
                         fill: true,
                         backgroundColor: 'rgba(212, 175, 55, 0.05)'
                     }]
@@ -243,8 +253,12 @@
                 options: {
                     responsive: true,
                     maintainAspectRatio: false,
+                    animation: false,
                     plugins: { legend: { display: false } },
-                    scales: { y: { beginAtZero: true, ticks: { color: '#D4AF37' } }, x: { ticks: { color: '#666' } } }
+                    scales: { 
+                        y: { beginAtZero: true, ticks: { color: '#D4AF37', stepSize: 1 } }, 
+                        x: { ticks: { color: '#666' } } 
+                    }
                 }
             });
         }
@@ -259,7 +273,7 @@
             stars.appendChild(s);
         }
 
-        setInterval(checkServer, 20000);
+        setInterval(checkServer, 1000);
         checkServer();
     </script>
 </body>
