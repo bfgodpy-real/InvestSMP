@@ -52,7 +52,7 @@
         nav ul { display: flex; list-style: none; gap: 30px; }
         nav ul li a { 
             color: #aaa; text-decoration: none; font-size: 0.85rem; font-weight: 700; 
-            transition: 0.3s; text-transform: uppercase;
+            transition: 0.3s; text-transform: uppercase; cursor: pointer;
         }
         nav ul li a.active, nav ul li a:hover { color: var(--gold); }
 
@@ -82,7 +82,7 @@
 
         .chart-container {
             background: rgba(255,255,255,0.02); border: 1px solid var(--dark-gold);
-            border-radius: 15px; padding: 30px; margin-top: 40px;
+            border-radius: 15px; padding: 30px; margin-top: 40px; height: 450px;
         }
 
         .shop-category { margin-top: 60px; text-align: center; }
@@ -108,7 +108,7 @@
         }
         .buy-btn:hover { background: #fff; }
 
-        .empty-msg { opacity: 0.4; font-style: italic; padding: 40px; border: 1px dashed var(--dark-gold); border-radius: 10px; }
+        .contact-box { text-align: center; border: 1px solid var(--dark-gold); padding: 60px; margin-top: 40px; background: var(--glass); }
     </style>
 </head>
 <body>
@@ -118,10 +118,10 @@
     <nav>
         <div class="logo">INVEST SMP</div>
         <ul>
-            <li><a href="#" onclick="switchTab('home')" class="active" id="nav-home">Home</a></li>
-            <li><a href="#" onclick="switchTab('stats')" id="nav-stats">Stats</a></li>
-            <li><a href="#" onclick="switchTab('shop')" id="nav-shop">Shop</a></li>
-            <li><a href="#" onclick="switchTab('contact')" id="nav-contact">Contact</a></li>
+            <li><a onclick="tab('home')" class="active" id="n-home">Home</a></li>
+            <li><a onclick="tab('stats')" id="n-stats">Stats</a></li>
+            <li><a onclick="tab('shop')" id="n-shop">Shop</a></li>
+            <li><a onclick="tab('contact')" id="n-contact">Contact</a></li>
         </ul>
     </nav>
 
@@ -129,17 +129,17 @@
         <div class="hero">
             <h1>InvestSMP</h1>
             <div class="status-badge">
-                <span id="player-count">...</span> Players Online
+                <span id="pc">...</span> Players Online
             </div>
             <br>
-            <div class="ip-card" onclick="copyIP()">invest.minekeep.gg</div>
+            <div class="ip-card" onclick="navigator.clipboard.writeText('invest.minekeep.gg'); alert('IP Copied!')">invest.minekeep.gg</div>
         </div>
     </section>
 
     <section id="stats">
         <h2 style="font-family: 'Cinzel'; color: var(--gold); text-align: center;">Player Count History</h2>
         <div class="chart-container">
-            <canvas id="mainChart"></canvas>
+            <canvas id="ch"></canvas>
         </div>
     </section>
 
@@ -176,77 +176,67 @@
                 </div>
             </div>
         </div>
-
-        <div class="shop-category">
-            <h2>Crate Keys</h2>
-            <div class="empty-msg">No keys currently in stock. Check back soon!</div>
-        </div>
     </section>
 
     <section id="contact">
-        <div style="text-align: center; border: 1px solid var(--dark-gold); padding: 60px;">
-            <h2 style="font-family: 'Cinzel'; color: var(--gold);">Contact</h2>
+        <div class="contact-box">
+            <h2 style="font-family: 'Cinzel'; color: var(--gold);">Contact Support</h2>
             <div style="font-size: 1.8rem; color: var(--gold); margin-top: 20px;">admin@investsmp.gg</div>
         </div>
     </section>
 
     <script>
-        const IP = "invest.minekeep.gg";
-        const FIREBASE_URL = "https://investsmp-default-rtdb.firebaseio.com/players.json";
-        let historyData = JSON.parse(localStorage.getItem('is_hist')) || [];
-        let activeChart = null;
+        let hist = JSON.parse(localStorage.getItem('invest_hist')) || [];
+        let chart = null;
 
-        function switchTab(target) {
+        function tab(t) {
             document.querySelectorAll('section').forEach(s => s.classList.remove('active'));
             document.querySelectorAll('nav a').forEach(a => a.classList.remove('active'));
-            document.getElementById(target).classList.add('active');
-            document.getElementById('nav-' + target).classList.add('active');
-            if(target === 'stats') setTimeout(renderGraph, 100);
+            document.getElementById(t).classList.add('active');
+            document.getElementById('n-' + t).classList.add('active');
+            if(t === 'stats') setTimeout(draw, 100);
             window.scrollTo(0,0);
         }
 
-        function copyIP() {
-            navigator.clipboard.writeText(IP).then(() => alert("IP Copied!"));
-        }
-
-        async function checkServer() {
+        async function update() {
             try {
-                // Fetch directly from your Firebase bridge
-                const res = await fetch(`${FIREBASE_URL}?t=${Date.now()}`);
-                const data = await res.json();
+                const r = await fetch('https://api.mcstatus.io/v2/status/java/invest.minekeep.gg');
+                const d = await r.json();
                 
-                let count = data ? (data.count || 0) : 0;
-                const countElement = document.getElementById('player-count');
-                const lastCount = parseInt(countElement.textContent) || 0;
-                
-                countElement.textContent = count;
-
-                // Update graph ONLY when the count actually changes
-                if (count !== lastCount) {
-                    const time = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', second: '2-digit' });
-                    historyData.push({ t: time, p: count });
-                    if(historyData.length > 50) historyData.shift();
-                    localStorage.setItem('is_hist', JSON.stringify(historyData));
-                    if(document.getElementById('stats').classList.contains('active')) renderGraph();
+                let count = 0;
+                if (d.players && d.players.list && d.players.list.length > 0) {
+                    count = d.players.list.length;
+                } else {
+                    count = d.players ? d.players.online : 0;
                 }
-            } catch(e) {
-                console.error("Firebase Bridge Offline");
-            }
+
+                const el = document.getElementById('pc');
+                const last = parseInt(el.innerText) || 0;
+                el.innerText = count;
+
+                if (count !== last) {
+                    const now = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', second: '2-digit' });
+                    hist.push({ t: now, p: count });
+                    if(hist.length > 50) hist.shift();
+                    localStorage.setItem('invest_hist', JSON.stringify(hist));
+                    if(document.getElementById('stats').classList.contains('active')) draw();
+                }
+            } catch(e) { console.error("Update failed"); }
         }
 
-        function renderGraph() {
-            const ctx = document.getElementById('mainChart').getContext('2d');
-            if(activeChart) activeChart.destroy();
-            activeChart = new Chart(ctx, {
+        function draw() {
+            const ctx = document.getElementById('ch').getContext('2d');
+            if(chart) chart.destroy();
+            chart = new Chart(ctx, {
                 type: 'line',
                 data: {
-                    labels: historyData.map(d => d.t),
+                    labels: hist.map(x => x.t),
                     datasets: [{
-                        data: historyData.map(d => d.p),
+                        data: hist.map(x => x.p),
                         borderColor: '#D4AF37',
                         pointBackgroundColor: '#FFD700',
                         pointRadius: 4,
-                        tension: 0,
+                        tension: 0.2,
                         fill: true,
                         backgroundColor: 'rgba(212, 175, 55, 0.05)'
                     }]
@@ -254,7 +244,6 @@
                 options: {
                     responsive: true,
                     maintainAspectRatio: false,
-                    animation: false,
                     plugins: { legend: { display: false } },
                     scales: { 
                         y: { beginAtZero: true, ticks: { color: '#D4AF37', stepSize: 1 } }, 
@@ -265,7 +254,7 @@
         }
 
         const stars = document.getElementById('star-container');
-        for (let i = 0; i < 50; i++) {
+        for (let i = 0; i < 70; i++) {
             const s = document.createElement('div');
             s.className = 'star';
             s.style.width = s.style.height = (Math.random() * 2 + 1) + 'px';
@@ -274,9 +263,8 @@
             stars.appendChild(s);
         }
 
-        // Check every second
-        setInterval(checkServer, 1000);
-        checkServer();
+        setInterval(update, 5000);
+        update();
     </script>
 </body>
 </html>
