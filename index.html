@@ -62,7 +62,6 @@
         }
         .tagline { font-size: 1.1rem; font-weight: 700; letter-spacing: 5px; margin: 10px 0 35px; color: #eee; }
 
-        /* --- BUTTONS --- */
         .cta-group { display: flex; gap: 15px; justify-content: center; flex-wrap: wrap; margin-bottom: 50px; }
         .btn { 
             position: relative; width: 280px; padding: 16px 0; border-radius: 4px; 
@@ -80,13 +79,11 @@
         .btn:hover .default-text { display: none; }
         .btn:hover .hover-text { display: inline; }
 
-        /* --- BOXES --- */
         .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 25px; }
         .box { background: var(--dark-grad); border: 1px solid var(--gold); padding: 35px; border-radius: 12px; }
         .box h3 { color: var(--gold); font-family: 'Cinzel'; margin-bottom: 12px; font-size: 1.5rem; }
         .box p { color: #bbb; line-height: 1.7; font-size: 1rem; }
 
-        /* --- PLAYERS --- */
         .player-list { display: flex; flex-wrap: wrap; gap: 12px; justify-content: center; margin-top: 25px; }
         .player-head { display: flex; align-items: center; gap: 10px; background: rgba(255,255,255,0.05); padding: 8px 15px; border-radius: 6px; border: 1px solid #333; font-weight: 600; font-size: 0.9rem; }
         .player-head img { width: 28px; height: 28px; image-rendering: pixelated; }
@@ -117,7 +114,7 @@
 
     <section id="home" class="active">
         <div class="hero">
-            <div style="color: #00FF00; font-weight: 800; margin-bottom: 12px;">● <span id="pc">0</span> PLAYERS ONLINE</div>
+            <div style="color: #00FF00; font-weight: 800; margin-bottom: 12px;">● <span id="pc">...</span> PLAYERS ONLINE</div>
             <h1>InvestSMP</h1>
             <div class="tagline">SURVIVAL — ECONOMY — PVP</div>
             
@@ -209,39 +206,45 @@
         function ignite() { targetSpeed = 160; setTimeout(() => targetSpeed = 1, 1000); }
 
         let lastCount = -1;
-        let hist = JSON.parse(localStorage.getItem('smphist_v4')) || [];
+        // Forced reset of storage key to prevent caching errors
+        let hist = JSON.parse(localStorage.getItem('smphist_v6')) || [];
         
         async function updateData() {
+            console.log("Checking server status...");
             try {
-                // Now using mcsrvstat.us API
-                const r = await fetch('https://api.mcsrvstat.us/3/invest.minekeep.gg');
+                // Fetch with a timestamp to bypass browser cache
+                const r = await fetch('https://api.mcsrvstat.us/3/invest.minekeep.gg?t=' + Date.now());
                 const d = await r.json();
                 
-                const count = d.players ? d.players.online : 0;
-                document.getElementById('pc').innerText = count;
+                let rawCount = (d.players && d.players.online) ? d.players.online : 0;
+                let adjustedCount = rawCount + 1; // Your manual +1 adjustment
+
+                document.getElementById('pc').innerText = adjustedCount;
+                console.log("Updated count to: " + adjustedCount);
 
                 const list = document.getElementById('pl-list');
                 list.innerHTML = '';
                 
-                // mcsrvstat returns players in d.players.list
                 if(d.players && d.players.list) {
                     d.players.list.forEach(p => {
                         const name = p.name || p; 
                         list.innerHTML += `<div class="player-head"><img src="https://minotar.net/helm/${name}/32" alt="">${name}</div>`;
                     });
-                } else if(count > 0) {
+                } else if(adjustedCount > 0) {
                     list.innerHTML = `<p style="color:#555">Names are private or proxy-hidden.</p>`;
                 }
 
-                if (count !== lastCount) {
+                if (adjustedCount !== lastCount) {
                     const now = new Date().toLocaleTimeString([], {hour:'2-digit', minute:'2-digit'});
-                    hist.push({t: now, p: count});
+                    hist.push({t: now, p: adjustedCount});
                     if(hist.length > 25) hist.shift();
-                    localStorage.setItem('smphist_v4', JSON.stringify(hist));
-                    lastCount = count;
+                    localStorage.setItem('smphist_v6', JSON.stringify(hist));
+                    lastCount = adjustedCount;
                     if(document.getElementById('stats').classList.contains('active')) drawChart();
                 }
-            } catch(e) { console.warn("API Error"); }
+            } catch(e) { 
+                console.error("API Error:", e);
+            }
         }
 
         function drawChart() {
@@ -267,7 +270,7 @@
 
         initCanvas();
         updateStars();
-        setInterval(updateData, 15000);
+        setInterval(updateData, 15000); // Check every 15 seconds
         updateData();
     </script>
 </body>
