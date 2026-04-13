@@ -19,16 +19,14 @@
 
         #star-canvas { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; z-index: -1; }
 
-        /* --- NOTIFICATION --- */
         #notif-container {
             position: fixed; top: -100px; left: 50%; transform: translateX(-50%);
             background: var(--gold-grad); color: black; padding: 12px 25px; border-radius: 4px;
-            font-weight: 800; z-index: 10000; transition: 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            font-weight: 800; z-index: 10000; transition: 0.5s;
             box-shadow: 0 0 20px rgba(212,175,55,0.5);
         }
         #notif-container.active { top: 20px; }
 
-        /* --- NAVIGATION --- */
         nav {
             position: fixed; top: 0; width: 100%; padding: 20px 50px;
             display: flex; justify-content: space-between; align-items: center;
@@ -36,10 +34,8 @@
         }
         .logo { font-family: 'Cinzel', serif; color: var(--gold); font-size: 1.6rem; letter-spacing: 2px; cursor: pointer; }
         nav ul { display: flex; list-style: none; gap: 30px; }
-        nav ul li a { color: #fff; text-decoration: none; font-size: 0.8rem; font-weight: 700; text-transform: uppercase; cursor: pointer; transition: 0.3s; }
-        nav ul li a:hover { color: var(--gold); text-shadow: 0 0 10px var(--gold); }
+        nav ul li a { color: #fff; text-decoration: none; font-size: 0.8rem; font-weight: 700; text-transform: uppercase; cursor: pointer; }
 
-        /* --- CHAINS --- */
         .chain-divider {
             height: 35px;
             background-image: url('https://www.transparentpng.com/download/gold-chain/EY6HlV-gold-chain-transparent-image.png');
@@ -50,7 +46,6 @@
             opacity: 0.7;
         }
 
-        /* --- SECTIONS --- */
         section { display: none; padding: 140px 20px 80px; max-width: 1100px; margin: 0 auto; min-height: 100vh; }
         section.active { display: block; animation: fadeIn 0.4s ease; }
         @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
@@ -61,114 +56,112 @@
             font-size: clamp(3rem, 10vw, 5.5rem); 
             background: var(--gold-grad); 
             -webkit-background-clip: text; 
-            background-clip: text; 
+            background-clip: text;
             -webkit-text-fill-color: transparent; 
             filter: drop-shadow(0 0 15px rgba(212,175,55,0.3)); 
         }
         .tagline { font-size: 1.1rem; font-weight: 700; letter-spacing: 5px; margin: 10px 0 35px; color: #eee; }
 
+        /* --- BUTTONS --- */
         .cta-group { display: flex; gap: 15px; justify-content: center; flex-wrap: wrap; margin-bottom: 50px; }
-        .btn { padding: 16px 35px; border-radius: 4px; font-weight: 800; border: none; cursor: pointer; text-decoration: none; transition: 0.3s; font-size: 1rem; }
-        .btn-gold { background: var(--gold-grad); color: black; text-transform: uppercase; }
-        .btn-discord { background: var(--discord); color: white; text-transform: uppercase; }
-        .btn:hover { transform: translateY(-3px); box-shadow: 0 8px 20px rgba(212,175,55,0.4); }
+        .btn { 
+            position: relative;
+            width: 280px;
+            padding: 16px 0;
+            border-radius: 4px; 
+            font-weight: 800; 
+            cursor: pointer; 
+            transition: 0.3s; 
+            font-size: 1rem;
+            text-transform: uppercase;
+            text-align: center;
+            overflow: hidden;
+            border: 2px solid transparent;
+        }
+
+        .btn-gold { background: var(--gold-grad); color: black; border-color: var(--gold); }
+        .btn-gold:hover { background: transparent; color: var(--gold); }
+        
+        .btn-discord { background: var(--discord); color: white; border-color: var(--discord); }
+        .btn-discord:hover { background: transparent; color: var(--discord); }
+
+        .btn .hover-text { display: none; }
+        .btn:hover .default-text { display: none; }
+        .btn:hover .hover-text { display: inline; }
 
         /* --- BOXES --- */
         .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 25px; }
-        .box { background: var(--dark-grad); border: 1px solid var(--gold); padding: 35px; border-radius: 12px; transition: 0.3s; }
-        .box:hover { transform: scale(1.02); box-shadow: 0 0 20px rgba(212,175,55,0.1); }
+        .box { background: var(--dark-grad); border: 1px solid var(--gold); padding: 35px; border-radius: 12px; }
         .box h3 { color: var(--gold); font-family: 'Cinzel'; margin-bottom: 12px; font-size: 1.5rem; }
         .box p { color: #bbb; line-height: 1.7; font-size: 1rem; }
 
-        /* --- PLAYER LIST --- */
         .player-list { display: flex; flex-wrap: wrap; gap: 12px; justify-content: center; margin-top: 25px; }
         .player-head { display: flex; align-items: center; gap: 10px; background: rgba(255,255,255,0.05); padding: 8px 15px; border-radius: 6px; border: 1px solid #333; font-weight: 600; font-size: 0.9rem; }
-        .player-head img { width: 28px; height: 28px; image-rendering: pixelated; border-radius: 2px; }
+        .player-head img { width: 28px; height: 28px; image-rendering: pixelated; }
 
-        /* --- SHOP --- */
-        .shop-card { background: var(--dark-grad); border: 2px solid var(--gold); border-radius: 20px; padding: 50px; text-align: center; max-width: 450px; margin: 20px auto; box-shadow: 0 0 30px rgba(212,175,55,0.15); }
-        .price-tag { font-size: 3.5rem; font-weight: 800; color: #fff; margin: 15px 0; display: block; }
-        .buy-btn { width: 100%; display: block; padding: 18px; background: var(--gold-grad); color: black; font-weight: 800; text-decoration: none; border-radius: 4px; text-transform: uppercase; letter-spacing: 1px; cursor: pointer; border: none; }
-
-        /* --- FOOTER --- */
-        footer { text-align: center; padding: 40px 20px; font-size: 0.8rem; color: #666; letter-spacing: 1px; }
+        footer { text-align: center; padding: 40px 20px; font-size: 0.8rem; color: #666; }
         footer span { color: var(--gold); font-weight: 700; }
 
-        /* --- EASTER EGG --- */
         #hidden-coin {
             position: fixed; bottom: 15px; right: 15px; width: 20px; height: 20px;
             background: radial-gradient(circle, #FFD700, #996515);
-            border-radius: 50%; opacity: 0.2; cursor: help; z-index: 9999;
-            transition: 0.3s;
+            border-radius: 50%; opacity: 0.2; cursor: help; z-index: 9999; transition: 0.3s;
         }
-        #hidden-coin:hover { opacity: 0.8; transform: rotateY(180deg); }
     </style>
 </head>
 <body>
 
     <canvas id="star-canvas"></canvas>
-    <div id="notif-container">IP Copied! See you online.</div>
+    <div id="notif-container">IP Copied!</div>
 
     <nav>
-        <div class="logo" onclick="tab('home')">INVEST SMP</div>
+        <div class="logo" onclick="location.reload()">INVEST SMP</div>
         <ul>
             <li><a onclick="tab('home')">Home</a></li>
             <li><a onclick="tab('stats')">Stats</a></li>
-            <li><a onclick="tab('shop')">Shop</a></li>
+            <li><a onclick="shopRedirect('https://investsmp.tebex.io/', 'webstore')">Shop</a></li>
         </ul>
     </nav>
 
     <section id="home" class="active">
         <div class="hero">
-            <div style="color: #00FF00; font-weight: 800; margin-bottom: 12px; letter-spacing: 2px;">● <span id="pc">...</span> PLAYERS ONLINE</div>
+            <div style="color: #00FF00; font-weight: 800; margin-bottom: 12px;">● <span id="pc">0</span> PLAYERS ONLINE</div>
             <h1>InvestSMP</h1>
             <div class="tagline">SURVIVAL — ECONOMY — PVP</div>
             
             <div class="cta-group">
-                <button class="btn btn-gold" onclick="copyIP()">INVEST.MINEKEEP.GG</button>
-                <a href="https://discord.gg/rKyumcXBCf" target="_blank" class="btn btn-discord">JOIN DISCORD</a>
+                <div class="btn btn-gold" onclick="copyIP()">
+                    <span class="default-text">IP - Copy</span>
+                    <span class="hover-text">INVEST.MINEKEEP.GG</span>
+                </div>
+                <div class="btn btn-discord" onclick="shopRedirect('https://discord.gg/rKyumcXBCf', 'Discord')">
+                    <span class="default-text">Discord</span>
+                    <span class="hover-text">DISCORD.GG/RKYUMCXBCF</span>
+                </div>
             </div>
 
             <div class="grid">
                 <div class="box">
-                    <h3>Stock Market</h3>
-                    <p>Earn money through classic survival and invest it into live-updating stocks. Trade your way to the top of the leaderboard without ever breaking a block.</p>
+                    <h3>Survival</h3>
+                    <p>Play normal survival with friends. Build bases, gather resources, and explore the world.</p>
                 </div>
                 <div class="box">
-                    <h3>Hardcore Survival</h3>
-                    <p>Build your base and protect your wealth. With a high-stakes economy, every diamond and every trade counts. PvP is always an option.</p>
+                    <h3>Economy</h3>
+                    <p>Use our stock market system to trade and make money. Buy and sell to become the richest player.</p>
                 </div>
             </div>
 
             <div class="chain-divider"></div>
 
-            <h3 style="font-family: 'Cinzel'; color: var(--gold); margin-bottom: 20px; letter-spacing: 2px;">Active Players</h3>
-            <div id="pl-list" class="player-list">
-                <p style="color:#444">Scanning server...</p>
-            </div>
+            <h3 style="font-family: 'Cinzel'; color: var(--gold); margin-bottom: 20px;">Online Players</h3>
+            <div id="pl-list" class="player-list"></div>
         </div>
     </section>
 
     <section id="stats">
-        <h2 style="font-family:'Cinzel'; color:var(--gold); text-align:center; margin-bottom: 30px;">Economy Activity</h2>
+        <h2 style="font-family:'Cinzel'; color:var(--gold); text-align:center; margin-bottom: 30px;">Player Activity</h2>
         <div class="box" style="height: 450px;"><canvas id="ch"></canvas></div>
     </section>
-
-    <section id="shop">
-        <div class="shop-card">
-            <h2 style="font-family:'Cinzel'; color:var(--gold); font-size: 2.2rem;">INVESTOR RANK</h2>
-            <span class="price-tag">$4.99</span>
-            <ul style="list-style: none; color: #ccc; text-align: left; margin-bottom: 35px; line-height: 2.2;">
-                <li>• Exclusive [Investor] Prefix</li>
-                <li>• Colored Chat & Nickname Access</li>
-                <li>• 5 Home Set Points</li>
-                <li>• Priority Queue Bypass</li>
-            </ul>
-            <button onclick="shopRedirect()" class="buy-btn">PURCHASE RANK</button>
-        </div>
-    </section>
-
-    <div class="chain-divider"></div>
 
     <footer>
         OWNED BY <span>DUUCKSTER</span> — MADE BY <span>BFGODPY</span>
@@ -182,37 +175,24 @@
         let w, h, stars = [], targetSpeed = 1, speedMult = 1;
 
         function initCanvas() {
-            w = canvas.width = window.innerWidth;
-            h = canvas.height = window.innerHeight;
+            w = canvas.width = window.innerWidth; h = canvas.height = window.innerHeight;
             stars = [];
             for(let i=0; i<350; i++) stars.push({ x: Math.random()*w-w/2, y: Math.random()*h-h/2, z: Math.random()*w, o: Math.random() });
         }
-
         window.addEventListener('resize', initCanvas);
-        window.addEventListener('scroll', () => {
-            targetSpeed = 10;
-            clearTimeout(window.sT);
-            window.sT = setTimeout(() => targetSpeed = 1, 150);
-        });
+        window.addEventListener('scroll', () => { targetSpeed = 10; clearTimeout(window.sT); window.sT = setTimeout(() => targetSpeed = 1, 150); });
 
         function updateStars() {
-            ctx.fillStyle = '#000';
-            ctx.fillRect(0,0,w,h);
+            ctx.fillStyle = '#000'; ctx.fillRect(0,0,w,h);
             speedMult += (targetSpeed - speedMult) * 0.1;
             ctx.translate(w/2, h/2);
             for(let s of stars) {
-                s.z -= speedMult;
-                if(s.z <= 0) s.z = w;
+                s.z -= speedMult; if(s.z <= 0) s.z = w;
                 let sx = s.x / (s.z / w), sy = s.y / (s.z / w);
-                ctx.beginPath();
-                ctx.strokeStyle = `rgba(255, 255, 255, ${s.o})`;
-                ctx.lineWidth = 1.6 * (1 - s.z / w);
-                ctx.moveTo(sx, sy);
-                ctx.lineTo(s.x / ((s.z + speedMult*2)/w), s.y / ((s.z + speedMult*2)/w));
-                ctx.stroke();
+                ctx.beginPath(); ctx.strokeStyle = `rgba(255, 255, 255, ${s.o})`; ctx.lineWidth = 1.6 * (1 - s.z / w);
+                ctx.moveTo(sx, sy); ctx.lineTo(s.x / ((s.z + speedMult*2)/w), s.y / ((s.z + speedMult*2)/w)); ctx.stroke();
             }
-            ctx.setTransform(1,0,0,1,0,0);
-            requestAnimationFrame(updateStars);
+            ctx.setTransform(1,0,0,1,0,0); requestAnimationFrame(updateStars);
         }
 
         function tab(t) {
@@ -225,77 +205,66 @@
         function copyIP() {
             navigator.clipboard.writeText('invest.minekeep.gg');
             const n = document.getElementById('notif-container');
-            n.classList.add('active');
-            setTimeout(() => n.classList.remove('active'), 2500);
+            n.classList.add('active'); setTimeout(() => n.classList.remove('active'), 2500);
         }
 
-        function shopRedirect() {
-            if (confirm("You are now leaving InvestSMP. Do you want to continue to the webstore?")) {
-                window.open("https://investsmp.tebex.io/", "_blank");
+        function shopRedirect(url, name) {
+            if (confirm(`Do you want to leave this page to go to our ${name}?`)) {
+                window.open(url, "_blank");
             }
         }
 
-        function ignite() { 
-            targetSpeed = 160; 
-            setTimeout(() => targetSpeed = 1, 1000); 
-        }
+        function ignite() { targetSpeed = 160; setTimeout(() => targetSpeed = 1, 1000); }
 
-        let hist = JSON.parse(localStorage.getItem('smphist')) || [];
+        let lastCount = -1;
+        let hist = JSON.parse(localStorage.getItem('smphist_v3')) || [];
         
         async function updateData() {
             try {
                 const r = await fetch('https://api.mcstatus.io/v2/status/java/invest.minekeep.gg');
                 const d = await r.json();
-                
-                const count = d.online ? d.players.online : (hist.length > 0 ? hist[hist.length-1].p : 0);
+                const count = d.players ? d.players.online : 0;
                 document.getElementById('pc').innerText = count;
 
                 const list = document.getElementById('pl-list');
-                if(d.players && d.players.list && d.players.list.length > 0) {
-                    list.innerHTML = '';
+                list.innerHTML = '';
+                if(d.players && d.players.list) {
                     d.players.list.forEach(p => {
-                        list.innerHTML += `<div class="player-head"><img src="https://minotar.net/helm/${p.name}/32" alt="">${p.name}</div>`;
+                        const name = p.name || p; 
+                        list.innerHTML += `<div class="player-head"><img src="https://minotar.net/helm/${name}/32" alt="">${name}</div>`;
                     });
-                } else {
-                    list.innerHTML = `<p style="color:#555">Player names are currently private.</p>`;
+                } else if(count > 0) {
+                    list.innerHTML = `<p style="color:#555">Player list is hidden by server.</p>`;
                 }
 
-                const now = new Date().toLocaleTimeString([], {hour:'2-digit', minute:'2-digit'});
-                if(count !== 0 || hist.length === 0) {
+                if (count !== lastCount) {
+                    const now = new Date().toLocaleTimeString([], {hour:'2-digit', minute:'2-digit'});
                     hist.push({t: now, p: count});
-                    if(hist.length > 20) hist.shift();
-                    localStorage.setItem('smphist', JSON.stringify(hist));
+                    if(hist.length > 25) hist.shift();
+                    localStorage.setItem('smphist_v3', JSON.stringify(hist));
+                    lastCount = count;
+                    if(document.getElementById('stats').classList.contains('active')) drawChart();
                 }
-                if(document.getElementById('stats').classList.contains('active')) drawChart();
-            } catch(e) { console.warn("API throttled or server offline"); }
+            } catch(e) { console.warn("API error"); }
         }
 
         function drawChart() {
-            const ctx = document.getElementById('ch').getContext('2d');
+            const chartCtx = document.getElementById('ch').getContext('2d');
             if(window.myChart) window.myChart.destroy();
-            window.myChart = new Chart(ctx, {
+            window.myChart = new Chart(chartCtx, {
                 type: 'line',
                 data: {
                     labels: hist.map(x => x.t),
                     datasets: [{ 
-                        label: 'Players',
                         data: hist.map(x => x.p), 
                         borderColor: '#D4AF37', 
-                        borderWidth: 3,
-                        tension: 0.4, 
-                        fill: true, 
-                        backgroundColor: 'rgba(212,175,55,0.1)',
-                        pointBackgroundColor: '#fff'
+                        borderWidth: 3, tension: 0.4, fill: true, backgroundColor: 'rgba(212,175,55,0.1)' 
                     }]
                 },
                 options: { 
-                    responsive: true, 
-                    maintainAspectRatio: false, 
+                    responsive: true, maintainAspectRatio: false,
                     plugins: { legend: { display: false } },
-                    scales: { 
-                        y: { beginAtZero: true, grid: { color: '#222' } },
-                        x: { grid: { display: false } }
-                    }
+                    scales: { y: { beginAtZero: true, grid: { color: '#222' } }, x: { grid: { display: false } } }
                 }
             });
         }
