@@ -11,299 +11,305 @@
             --gold: #D4AF37;
             --bright-gold: #FFD700;
             --dark-gold: #996515;
-            --glass: rgba(255, 255, 255, 0.03);
-            --glow: 0 0 20px rgba(212, 175, 55, 0.3);
+            --discord: #5865F2;
+            --glass: rgba(255, 255, 255, 0.05);
+            --glow: 0 0 20px rgba(212, 175, 55, 0.4);
         }
 
-        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Montserrat', sans-serif; }
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Montserrat', sans-serif; scroll-behavior: smooth; }
 
         body {
             background: #000;
-            background: radial-gradient(circle at 50% 50%, #151515 0%, #000 100%);
             color: white;
-            min-height: 100vh;
+            min-height: 200vh; /* Extra height for scroll effect */
             overflow-x: hidden;
         }
 
-        /* --- NOTIFICATION SYSTEM --- */
-        #notif-container {
+        /* --- LIGHTSPEED BACKGROUND --- */
+        #star-canvas {
             position: fixed;
-            top: -100px;
-            left: 50%;
-            transform: translateX(-50%);
-            background: rgba(0, 0, 0, 0.9);
-            border: 1px solid var(--gold);
-            padding: 15px 30px;
-            border-radius: 50px;
-            display: flex;
-            align-items: center;
-            gap: 15px;
-            z-index: 9999;
-            transition: top 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            box-shadow: var(--glow);
-            backdrop-filter: blur(10px);
+            top: 0; left: 0;
+            width: 100vw; height: 100vh;
+            z-index: -1;
+            background: radial-gradient(circle at center, #111 0%, #000 100%);
         }
 
+        /* --- NOTIFICATIONS --- */
+        #notif-container {
+            position: fixed; top: -100px; left: 50%; transform: translateX(-50%);
+            background: rgba(0, 0, 0, 0.9); border: 1px solid var(--gold);
+            padding: 15px 30px; border-radius: 50px; display: flex; align-items: center; gap: 15px;
+            z-index: 9999; transition: 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            box-shadow: var(--glow); backdrop-filter: blur(10px);
+        }
         #notif-container.active { top: 30px; }
 
-        .bell-icon {
-            font-size: 1.2rem;
-            animation: ring 2s infinite ease-in-out;
-            display: inline-block;
-        }
-
-        @keyframes ring {
-            0%, 100% { transform: rotate(0); }
-            10%, 30%, 50% { transform: rotate(20deg); }
-            20%, 40%, 60% { transform: rotate(-20deg); }
-            70% { transform: rotate(0); }
-        }
-
-        /* --- REST OF STYLES --- */
-        #star-container {
-            position: fixed;
-            top: 0; left: 0; width: 100%; height: 100%;
-            z-index: 0; pointer-events: none;
-        }
-
-        .star {
-            position: absolute;
-            background: var(--gold);
-            border-radius: 50%;
-            opacity: 0.4;
-            box-shadow: 0 0 5px var(--gold);
-        }
-
+        /* --- NAV --- */
         nav {
             position: fixed; top: 0; width: 100%; padding: 20px 50px;
             display: flex; justify-content: space-between; align-items: center;
-            background: rgba(0,0,0,0.85); backdrop-filter: blur(15px);
+            background: rgba(0,0,0,0.8); backdrop-filter: blur(15px);
             z-index: 1000; border-bottom: 1px solid var(--dark-gold);
         }
-
-        .logo { font-family: 'Cinzel', serif; color: var(--gold); font-size: 1.6rem; letter-spacing: 3px; text-shadow: var(--glow); }
-
+        .logo { font-family: 'Cinzel', serif; color: var(--gold); font-size: 1.6rem; letter-spacing: 3px; cursor: pointer; }
         nav ul { display: flex; list-style: none; gap: 30px; }
-        nav ul li a { 
-            color: #aaa; text-decoration: none; font-size: 0.85rem; font-weight: 700; 
-            transition: 0.3s; text-transform: uppercase; cursor: pointer;
-        }
-        nav ul li a.active, nav ul li a:hover { color: var(--gold); }
+        nav ul li a { color: #aaa; text-decoration: none; font-size: 0.85rem; font-weight: 700; text-transform: uppercase; cursor: pointer; transition: 0.3s; }
+        nav ul li a:hover, nav ul li a.active { color: var(--gold); text-shadow: var(--glow); }
 
-        section {
-            display: none; padding: 140px 20px 60px;
-            max-width: 1100px; margin: 0 auto; min-height: 100vh;
-        }
-        section.active { display: block; }
+        /* --- SECTIONS --- */
+        section { display: none; padding: 140px 20px 60px; max-width: 1100px; margin: 0 auto; min-height: 100vh; }
+        section.active { display: block; animation: fadeIn 0.8s ease forwards; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
 
+        /* --- HERO & INTERACTIVE ELEMENTS --- */
         .hero { text-align: center; }
-        .hero h1 { font-family: 'Cinzel', serif; font-size: clamp(3rem, 10vw, 6rem); color: var(--gold); }
+        .hero h1 { font-family: 'Cinzel', serif; font-size: clamp(3rem, 10vw, 6rem); color: var(--gold); text-shadow: var(--glow); margin-bottom: 10px; }
         
-        .status-badge {
-            display: inline-flex; align-items: center; gap: 10px;
-            background: rgba(0, 255, 0, 0.05); border: 1px solid #0f0;
-            padding: 8px 20px; border-radius: 50px; color: #0f0;
-            font-weight: 700; margin: 20px 0;
-        }
+        .status-badge { display: inline-flex; align-items: center; gap: 10px; background: rgba(0, 255, 0, 0.1); border: 1px solid #0f0; padding: 8px 20px; border-radius: 50px; color: #0f0; font-weight: 700; margin-bottom: 20px; }
 
         .ip-card {
             background: var(--glass); border: 1px solid var(--gold);
             padding: 15px 45px; border-radius: 5px; color: var(--bright-gold);
             font-weight: 700; cursor: pointer; transition: 0.3s;
-            margin-top: 25px; display: inline-block;
+            display: inline-block; margin: 10px;
         }
         .ip-card:hover { background: var(--gold); color: black; box-shadow: 0 0 30px var(--gold); }
 
-        .chart-container {
-            background: rgba(255,255,255,0.02); border: 1px solid var(--dark-gold);
-            border-radius: 15px; padding: 30px; margin-top: 40px; height: 450px;
+        /* --- INTERACTIVE TEXT BOXES --- */
+        .input-group { margin: 20px auto; max-width: 400px; text-align: left; }
+        .input-group label { display: block; color: var(--gold); font-size: 0.8rem; font-weight: 700; margin-bottom: 8px; text-transform: uppercase; }
+        
+        .styled-input {
+            width: 100%; background: rgba(255,255,255,0.05); border: 1px solid rgba(212,175,55,0.3);
+            padding: 15px; border-radius: 8px; color: white; outline: none;
+            transition: 0.4s; font-size: 1rem;
         }
+        .styled-input:focus { border-color: var(--gold); background: rgba(212,175,55,0.1); box-shadow: var(--glow); }
 
-        .shop-category { margin-top: 60px; text-align: center; }
-        .shop-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 30px; }
-        .shop-card {
-            background: linear-gradient(145deg, rgba(25,25,25,1) 0%, rgba(5,5,5,1) 100%);
-            border: 1px solid var(--dark-gold); border-radius: 12px; padding: 40px;
-            text-align: left; transition: 0.4s;
+        /* --- SHOP --- */
+        .shop-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 30px; margin-top: 40px; }
+        .shop-card { background: linear-gradient(145deg, #111, #000); border: 1px solid var(--dark-gold); border-radius: 15px; padding: 40px; transition: 0.3s; }
+        .shop-card:hover { transform: translateY(-10px); border-color: var(--gold); }
+        .price { font-size: 2.5rem; color: var(--gold); font-weight: 800; display: block; margin: 20px 0; text-align: center; }
+        .buy-btn { background: var(--gold); color: black; width: 100%; padding: 15px; border-radius: 5px; font-weight: 800; text-decoration: none; display: block; text-align: center; text-transform: uppercase; }
+
+        /* --- EASTER EGG PANEL --- */
+        #egg-panel {
+            position: fixed; right: -320px; top: 100px; width: 300px;
+            background: rgba(0,0,0,0.9); border: 1px solid var(--gold);
+            padding: 25px; border-radius: 15px 0 0 15px; z-index: 2000;
+            transition: 0.5s cubic-bezier(0.4, 0, 0.2, 1); backdrop-filter: blur(10px);
         }
-        .price { font-size: 2.2rem; color: var(--gold); font-weight: 800; display: block; margin: 15px 0; text-align: center; }
-        .perks-list { list-style: none; margin: 20px 0; color: rgba(255,255,255,0.7); font-size: 0.9rem; line-height: 1.6; }
-        .buy-btn {
-            background: var(--gold); color: black; border: none; width: 100%;
-            padding: 15px; border-radius: 5px; font-weight: 800; cursor: pointer;
-            text-transform: uppercase; transition: 0.3s; text-decoration: none; display: block; text-align: center;
-        }
+        #egg-panel.open { right: 0; }
+        .egg-btn { background: var(--gold); border: none; width: 100%; padding: 12px; font-weight: 800; cursor: pointer; margin-top: 15px; }
+        .cooldown-fill { width: 0%; height: 4px; background: var(--bright-gold); margin-top: 8px; transition: width 3s linear; }
     </style>
 </head>
 <body>
 
+    <canvas id="star-canvas"></canvas>
+
     <div id="notif-container">
-        <span class="bell-icon">🔔</span>
-        <span id="notif-msg">IP Copied to Clipboard!</span>
+        <span style="font-size: 1.5rem;">✨</span>
+        <span id="notif-msg">Copied!</span>
     </div>
 
-    <div id="star-container"></div>
+    <div id="egg-panel">
+        <h3 style="font-family:'Cinzel'; color:var(--gold);">Stellar Engine</h3>
+        <p style="font-size: 0.85rem; margin-top: 10px; color: #ccc;">Scroll to engage Hyperspace. Click below to supercharge a star.</p>
+        <button class="egg-btn" id="ignite-btn" onclick="igniteStar()">SUPERCHARGE</button>
+        <div id="cd-fill" class="cooldown-fill"></div>
+    </div>
 
     <nav>
-        <div class="logo">INVEST SMP</div>
+        <div class="logo" onclick="toggleEgg()">INVEST SMP</div>
         <ul>
-            <li><a onclick="tab('home')" class="active" id="n-home">Home</a></li>
+            <li><a onclick="tab('home')" id="n-home" class="active">Home</a></li>
             <li><a onclick="tab('stats')" id="n-stats">Stats</a></li>
             <li><a onclick="tab('shop')" id="n-shop">Shop</a></li>
-            <li><a onclick="tab('contact')" id="n-contact">Contact</a></li>
         </ul>
     </nav>
 
     <section id="home" class="active">
         <div class="hero">
+            <div class="status-badge"><span id="pc">0</span> Players Online</div>
             <h1>InvestSMP</h1>
-            <div class="status-badge">
-                <span id="pc">...</span> Players Online
-            </div>
-            <br>
+            <p style="color: #aaa; margin-bottom: 30px;">The galaxy's most competitive economy survival server.</p>
+            
             <div class="ip-card" onclick="copyIP()">invest.minekeep.gg</div>
+
+            <div class="input-group">
+                <label>Player Application</label>
+                <input type="text" class="styled-input" placeholder="Enter your Minecraft Username...">
+            </div>
+
+            <div class="input-group">
+                <label>Investment Inquiry</label>
+                <textarea class="styled-input" style="height: 100px; resize: none;" placeholder="What are your goals on InvestSMP?"></textarea>
+            </div>
         </div>
     </section>
 
     <section id="stats">
-        <h2 style="font-family: 'Cinzel'; color: var(--gold); text-align: center;">Player Count History</h2>
-        <div class="chart-container">
+        <h2 style="font-family:'Cinzel'; color:var(--gold); text-align:center; margin-bottom:30px;">Live Economy Data</h2>
+        <div style="background:rgba(0,0,0,0.5); border:1px solid var(--dark-gold); padding:20px; border-radius:15px; height: 400px;">
             <canvas id="ch"></canvas>
         </div>
     </section>
 
     <section id="shop">
-        <div class="shop-category">
-            <div class="shop-grid">
-                <div class="shop-card">
-                    <h3 style="text-align:center; color: var(--gold);">[INVESTOR]</h3>
-                    <span class="price">$4.99</span>
-                    <ul class="perks-list">
-                        <li>• [Investor] chat prefix</li>
-                        <li>• Shards everywhere</li>
-                        <li>• 3 Homes</li>
-                    </ul>
-                    <a href="https://buy.stripe.com/6oUeVc3bNfSU7ul1Wqawo00" class="buy-btn">Purchase</a>
-                </div>
-                <div class="shop-card">
-                    <h3 style="text-align:center; color: var(--gold);">[INVESTOR+]</h3>
-                    <span class="price">$11.99</span>
-                    <ul class="perks-list">
-                        <li>• [Investor+] chat prefix</li>
-                        <li>• 5 Homes</li>
-                        <li>• Access to all chat colors</li>
-                    </ul>
-                    <a href="#" class="buy-btn">Purchase</a>
-                </div>
+        <h2 style="font-family:'Cinzel'; color:var(--gold); text-align:center;">Server Ranks</h2>
+        <div class="shop-grid">
+            <div class="shop-card">
+                <h3 style="color:var(--gold); text-align:center;">INVESTOR</h3>
+                <span class="price">$4.99</span>
+                <ul style="list-style:none; color:#ccc; line-height:2;">
+                    <li>✔ Golden Name Color</li>
+                    <li>✔ Priority Queue</li>
+                    <li>✔ 3x Home Slots</li>
+                </ul>
+                <a href="#" class="buy-btn" style="margin-top:20px;">Buy Now</a>
             </div>
         </div>
     </section>
 
-    <section id="contact">
-        <div style="text-align: center; border: 1px solid var(--dark-gold); padding: 60px;">
-            <h2 style="font-family: 'Cinzel'; color: var(--gold);">Contact Support</h2>
-            <div style="font-size: 1.8rem; color: var(--gold); margin-top: 20px;">admin@investsmp.gg</div>
-        </div>
-    </section>
-
     <script>
-        let hist = JSON.parse(localStorage.getItem('invest_hist')) || [];
-        let chart = null;
+        // --- STAR WARS LIGHTSPEED ENGINE ---
+        const canvas = document.getElementById('star-canvas');
+        const ctx = canvas.getContext('2d');
+        let w, h, stars = [];
+        let speedMult = 1;
+        let targetSpeed = 1;
 
-        // --- NEW COPY & NOTIF LOGIC ---
-        function showNotif(msg) {
-            const container = document.getElementById('notif-container');
-            const msgEl = document.getElementById('notif-msg');
-            msgEl.innerText = msg;
-            container.classList.add('active');
+        function initCanvas() {
+            w = canvas.width = window.innerWidth;
+            h = canvas.height = window.innerHeight;
+            stars = [];
+            for(let i=0; i<400; i++) {
+                stars.push({
+                    x: Math.random() * w - w/2,
+                    y: Math.random() * h - h/2,
+                    z: Math.random() * w,
+                    o: Math.random()
+                });
+            }
+        }
+
+        window.addEventListener('resize', initCanvas);
+        window.addEventListener('scroll', () => {
+            targetSpeed = 15; // Engage lightspeed on scroll
+            clearTimeout(window.scrollTimer);
+            window.scrollTimer = setTimeout(() => { targetSpeed = 1; }, 100);
+        });
+
+        function updateStars() {
+            ctx.fillStyle = '#000';
+            ctx.fillRect(0, 0, w, h);
             
-            setTimeout(() => {
-                container.classList.remove('active');
-            }, 2000); // Stays for 2 seconds
+            // Smoothly transition speed
+            speedMult += (targetSpeed - speedMult) * 0.1;
+
+            ctx.translate(w/2, h/2);
+            for(let s of stars) {
+                s.z -= speedMult;
+                if(s.z <= 0) s.z = w;
+
+                let sx = s.x / (s.z / w);
+                let sy = s.y / (s.z / w);
+                let size = 2 * (1 - s.z / w);
+                
+                // If moving fast, draw streaks (Star Wars effect)
+                ctx.beginPath();
+                ctx.strokeStyle = `rgba(255, 255, 255, ${s.o})`;
+                ctx.lineWidth = size;
+                ctx.moveTo(sx, sy);
+                let streakX = s.x / ((s.z + (speedMult * 2)) / w);
+                let streakY = s.y / ((s.z + (speedMult * 2)) / w);
+                ctx.lineTo(streakX, streakY);
+                ctx.stroke();
+            }
+            ctx.setTransform(1, 0, 0, 1, 0, 0);
+            requestAnimationFrame(updateStars);
         }
 
-        function copyIP() {
-            navigator.clipboard.writeText('invest.minekeep.gg').then(() => {
-                showNotif("IP Copied to Clipboard!");
-            });
-        }
-
+        // --- CORE LOGIC ---
         function tab(t) {
             document.querySelectorAll('section').forEach(s => s.classList.remove('active'));
             document.querySelectorAll('nav a').forEach(a => a.classList.remove('active'));
             document.getElementById(t).classList.add('active');
             document.getElementById('n-' + t).classList.add('active');
-            if(t === 'stats') setTimeout(draw, 100);
-            window.scrollTo(0,0);
+            if(t === 'stats') setTimeout(drawChart, 100);
         }
 
-        async function update() {
+        function showNotif(msg) {
+            const n = document.getElementById('notif-container');
+            document.getElementById('notif-msg').innerText = msg;
+            n.classList.add('active');
+            setTimeout(() => n.classList.remove('active'), 2500);
+        }
+
+        function copyIP() {
+            navigator.clipboard.writeText('invest.minekeep.gg');
+            showNotif("IP Copied! See you in orbit.");
+        }
+
+        function toggleEgg() { document.getElementById('egg-panel').classList.toggle('open'); }
+
+        let canIgnite = true;
+        function igniteStar() {
+            if(!canIgnite) return;
+            canIgnite = false;
+            const bar = document.getElementById('cd-fill');
+            bar.style.width = '100%';
+            
+            targetSpeed = 100; // HUGE speed burst
+            setTimeout(() => { targetSpeed = 1; }, 800);
+
+            setTimeout(() => {
+                canIgnite = true;
+                bar.style.transition = 'none';
+                bar.style.width = '0%';
+                setTimeout(() => { bar.style.transition = 'width 3s linear'; }, 50);
+            }, 3000);
+        }
+
+        // --- DATA ---
+        let hist = JSON.parse(localStorage.getItem('smphist')) || [];
+        async function updateData() {
             try {
                 const r = await fetch('https://api.mcstatus.io/v2/status/java/invest.minekeep.gg');
                 const d = await r.json();
-                
-                let count = 0;
-                if (d.players && d.players.list && d.players.list.length > 0) {
-                    count = d.players.list.length;
-                } else {
-                    count = d.players ? d.players.online : 0;
-                }
-
-                const el = document.getElementById('pc');
-                const last = parseInt(el.innerText) || 0;
-                el.innerText = count;
-
-                if (count !== last) {
-                    const now = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', second: '2-digit' });
-                    hist.push({ t: now, p: count });
-                    if(hist.length > 50) hist.shift();
-                    localStorage.setItem('invest_hist', JSON.stringify(hist));
-                    if(document.getElementById('stats').classList.contains('active')) draw();
-                }
-            } catch(e) { console.error("Update failed"); }
+                const count = d.players?.list?.length || d.players?.online || 0;
+                document.getElementById('pc').innerText = count;
+                hist.push({t: new Date().toLocaleTimeString([], {hour:'2-digit', minute:'2-digit'}), p: count});
+                if(hist.length > 20) hist.shift();
+                localStorage.setItem('smphist', JSON.stringify(hist));
+            } catch(e) {}
         }
 
-        function draw() {
+        function drawChart() {
             const ctx = document.getElementById('ch').getContext('2d');
-            if(chart) chart.destroy();
-            chart = new Chart(ctx, {
+            if(window.myChart) window.myChart.destroy();
+            window.myChart = new Chart(ctx, {
                 type: 'line',
                 data: {
                     labels: hist.map(x => x.t),
                     datasets: [{
                         data: hist.map(x => x.p),
                         borderColor: '#D4AF37',
-                        pointBackgroundColor: '#FFD700',
-                        pointRadius: 4,
-                        tension: 0.2,
+                        tension: 0.4,
                         fill: true,
-                        backgroundColor: 'rgba(212, 175, 55, 0.05)'
+                        backgroundColor: 'rgba(212,175,55,0.1)'
                     }]
                 },
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    plugins: { legend: { display: false } },
-                    scales: { 
-                        y: { beginAtZero: true, ticks: { color: '#D4AF37', stepSize: 1 } }, 
-                        x: { ticks: { color: '#666' } } 
-                    }
-                }
+                options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } } }
             });
         }
 
-        const stars = document.getElementById('star-container');
-        for (let i = 0; i < 70; i++) {
-            const s = document.createElement('div');
-            s.className = 'star';
-            s.style.width = s.style.height = (Math.random() * 2 + 1) + 'px';
-            s.style.top = Math.random() * 100 + 'vh';
-            s.style.left = Math.random() * 100 + 'vw';
-            stars.appendChild(s);
-        }
-
-        setInterval(update, 5000);
-        update();
+        initCanvas();
+        updateStars();
+        setInterval(updateData, 10000);
+        updateData();
     </script>
 </body>
 </html>
