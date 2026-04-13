@@ -1,13 +1,250 @@
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Cosmic Sandbox 2026</title>
+    <style>
+        /* --- RESET AND BASE STYLES --- */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+        }
+
+        body {
+            /* The base cosmic gradient */
+            background: linear-gradient(135deg, #0f0c29 0%, #302b63 50%, #24243e 100%);
+            color: white;
+            min-height: 200vh; 
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        /* --- THE SCROLL CURTAIN --- */
+        /* This creates the darkening effect that fades as you scroll down */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.85); 
+            z-index: 1;
+            pointer-events: none;
+            transition: opacity 0.1s linear;
+        }
+
+        /* --- STAR FIELD --- */
+        #star-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+            pointer-events: none;
+        }
+
+        .star {
+            position: absolute;
+            background: white;
+            border-radius: 50%;
+            opacity: 0;
+            animation: blink 3s infinite;
+        }
+
+        @keyframes blink {
+            0%, 100% { opacity: 0; transform: scale(0.5); }
+            50% { opacity: 0.8; transform: scale(1); }
+        }
+
+        /* --- CONTENT WRAPPER --- */
+        main {
+            position: relative;
+            z-index: 2;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 100px 20px;
+        }
+
+        /* --- POLISHED HEADER --- */
+        header {
+            text-align: center;
+            margin-bottom: 80px;
+            animation: fadeInDown 1s ease-out;
+        }
+
+        h1 {
+            font-size: clamp(3rem, 8vw, 5rem);
+            background: linear-gradient(90deg, #ff00cc, #3333ff);
+            /* Compatibility properties */
+            background-clip: text;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-shadow: 0 0 30px rgba(255, 0, 204, 0.2);
+            margin-bottom: 15px;
+        }
+
+        .subtitle {
+            font-size: 1.2rem;
+            color: rgba(255, 255, 255, 0.6);
+            letter-spacing: 1px;
+        }
+
+        /* --- INTERACTIVE GRID --- */
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            width: 100%;
+            max-width: 1100px;
+        }
+
+        .card {
+            background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
+            padding: 50px 30px;
+            text-align: center;
+            transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            cursor: pointer;
+            opacity: 0;
+            animation: fadeInUp 0.8s ease-out forwards;
+        }
+
+        /* Card Hover State */
+        .card:hover {
+            transform: scale(1.1) translateY(-15px);
+            background: rgba(255, 255, 255, 0.08);
+            border-color: rgba(255, 255, 255, 0.4);
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5), 
+                        0 0 20px rgba(51, 51, 255, 0.2);
+        }
+
+        /* Staggered load for cards */
+        .card:nth-child(1) { animation-delay: 0.2s; }
+        .card:nth-child(2) { animation-delay: 0.4s; }
+        .card:nth-child(3) { animation-delay: 0.6s; }
+
+        /* --- ICON SPHERES --- */
+        .icon {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            margin: 0 auto 25px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            transition: transform 0.6s ease;
+        }
+
+        .card:hover .icon {
+            transform: rotateY(360deg);
+        }
+
+        .i-1 { background: linear-gradient(45deg, #00f2fe, #4facfe); box-shadow: 0 0 20px rgba(0, 242, 254, 0.5); }
+        .i-2 { background: linear-gradient(45deg, #ff0844, #ffb199); box-shadow: 0 0 20px rgba(255, 8, 68, 0.5); }
+        .i-3 { background: linear-gradient(45deg, #cc208e, #6713d2); box-shadow: 0 0 20px rgba(204, 32, 142, 0.5); }
+
+        h2 { margin-bottom: 15px; font-weight: 500; }
+        p.desc { color: rgba(255, 255, 255, 0.5); line-height: 1.6; }
+
+        /* --- FOOTER --- */
+        footer {
+            margin-top: 150px;
+            text-align: center;
+            padding: 40px;
+            z-index: 2;
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+            width: 100%;
+        }
+
+        /* --- KEYFRAMES --- */
+        @keyframes fadeInDown {
+            from { opacity: 0; transform: translateY(-40px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(40px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+    </style>
 </head>
 <body>
-    <h1>Welcome to the InvestSMP Official Site!</h1>
-    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Ea sequi fugit nesciunt, vitae, soluta nulla reiciendis cum voluptate ducimus eum, voluptatibus totam non at enim amet voluptatum aut id suscipit.</p>
-    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Ea sequi fugit nesciunt, vitae, soluta nulla reiciendis cum voluptate ducimus eum, voluptatibus totam non at enim amet voluptatum aut id suscipit.</p>
-    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Ea sequi fugit nesciunt, vitae, soluta nulla reiciendis cum voluptate ducimus eum, voluptatibus totam non at enim amet voluptatum aut id suscipit.</p>
+
+    <div id="star-container"></div>
+
+    <main>
+        <header>
+            <h1>Cosmic Sandbox</h1>
+            <p class="subtitle">EXPERIMENT • EVOLVE • EXPLORE</p>
+        </header>
+
+        <section class="grid">
+            <div class="card">
+                <div class="icon i-1">✦</div>
+                <h2>Aether</h2>
+                <p class="desc">A lightweight container. Modify the scale in CSS to change the growth intensity.</p>
+            </div>
+
+            <div class="card">
+                <div class="icon i-2">⚛</div>
+                <h2>Plasma</h2>
+                <p class="desc">High energy interactions. Try changing the backdrop-filter blur for more glass-morphism.</p>
+            </div>
+
+            <div class="card">
+                <div class="icon i-3">∞</div>
+                <h2>Void</h2>
+                <p class="desc">Deep space exploration. Scroll down to see the black fog lift from the stars.</p>
+            </div>
+        </section>
+
+        <footer>
+            <p>Designed for the 2026 Web</p>
+        </footer>
+    </main>
+
+    <script>
+        // --- STAR SYSTEM ---
+        const container = document.getElementById('star-container');
+        const starCount = 150;
+
+        for (let i = 0; i < starCount; i++) {
+            const star = document.createElement('div');
+            star.className = 'star';
+            const size = Math.random() * 3 + 'px';
+            star.style.width = size;
+            star.style.height = size;
+            star.style.top = Math.random() * 100 + 'vh';
+            star.style.left = Math.random() * 100 + 'vw';
+            star.style.animationDelay = Math.random() * 5 + 's';
+            container.appendChild(star);
+        }
+
+        // --- DYNAMIC SCROLL EFFECT ---
+        // We find the CSS rule for the 'curtain' to change its opacity
+        const curtain = Array.from(document.styleSheets[0].cssRules)
+                            .find(r => r.selectorText === 'body::before');
+
+        window.addEventListener('scroll', () => {
+            const scrollPercent = window.scrollY / (document.body.scrollHeight - window.innerHeight);
+            
+            // Starts at 0.85 opacity, ends at 0.15
+            const opacityValue = 0.85 - (scrollPercent * 0.7);
+            
+            if (curtain) {
+                curtain.style.opacity = opacityValue;
+            }
+        });
+    </script>
 </body>
 </html>
