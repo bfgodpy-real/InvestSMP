@@ -25,12 +25,12 @@
             overflow-x: hidden;
         }
 
-        /* --- HARDWARE ACCELERATED BACKGROUND --- */
+        /* GPU Background */
         #star-container {
             position: fixed;
             top: 0; left: 0; width: 100%; height: 100%;
             z-index: 0; pointer-events: none;
-            transform: translateZ(0); /* Forces GPU use */
+            transform: translateZ(0); 
         }
 
         .star {
@@ -41,7 +41,6 @@
             box-shadow: 0 0 5px var(--gold);
         }
 
-        /* --- PREMIUM NAV --- */
         nav {
             position: fixed; top: 0; width: 100%; padding: 20px 50px;
             display: flex; justify-content: space-between; align-items: center;
@@ -54,80 +53,54 @@
         nav ul { display: flex; list-style: none; gap: 30px; }
         nav ul li a { 
             color: #aaa; text-decoration: none; font-size: 0.85rem; font-weight: 700; 
-            transition: 0.3s; text-transform: uppercase; letter-spacing: 1px;
+            transition: 0.3s; text-transform: uppercase;
         }
-        nav ul li a:hover, nav ul li a.active { color: var(--gold); text-shadow: 0 0 10px var(--gold); }
+        nav ul li a.active, nav ul li a:hover { color: var(--gold); }
 
-        /* --- SECTIONS --- */
         section {
             display: none; padding: 140px 20px 60px;
             max-width: 1100px; margin: 0 auto; min-height: 100vh;
-            animation: slideUp 0.4s ease-out;
         }
         section.active { display: block; }
-        @keyframes slideUp { from { opacity: 0; transform: translateY(15px); } to { opacity: 1; transform: translateY(0); } }
 
-        /* --- HERO --- */
         .hero { text-align: center; }
-        .hero h1 { 
-            font-family: 'Cinzel', serif; font-size: clamp(3rem, 10vw, 6rem); 
-            color: var(--gold); text-shadow: 0 0 30px rgba(212, 175, 55, 0.4);
-            margin-bottom: 5px;
-        }
+        .hero h1 { font-family: 'Cinzel', serif; font-size: clamp(3rem, 10vw, 6rem); color: var(--gold); }
         
         .status-badge {
             display: inline-flex; align-items: center; gap: 10px;
             background: rgba(0, 255, 0, 0.05); border: 1px solid #0f0;
             padding: 8px 20px; border-radius: 50px; color: #0f0;
-            font-weight: 700; margin: 20px 0; font-size: 0.9rem;
+            font-weight: 700; margin: 20px 0;
         }
-        .dot { width: 8px; height: 8px; background: #0f0; border-radius: 50%; box-shadow: 0 0 10px #0f0; }
 
         .ip-card {
             background: var(--glass); border: 1px solid var(--gold);
             padding: 15px 45px; border-radius: 5px; color: var(--bright-gold);
-            font-weight: 700; font-size: 1.1rem; cursor: pointer;
-            transition: 0.3s; margin-top: 25px; display: inline-block;
-            box-shadow: var(--glow);
+            font-weight: 700; cursor: pointer; transition: 0.3s;
+            margin-top: 25px; display: inline-block;
         }
-        .ip-card:hover { background: var(--gold); color: black; box-shadow: 0 0 30px var(--gold); transform: translateY(-3px); }
+        .ip-card:hover { background: var(--gold); color: black; box-shadow: 0 0 30px var(--gold); }
 
-        /* --- GRAPH --- */
         .chart-container {
-            background: rgba(255,255,255,0.02); border: 1px solid var(--glass-border);
+            background: rgba(255,255,255,0.02); border: 1px solid var(--dark-gold);
             border-radius: 15px; padding: 30px; margin-top: 40px;
-            box-shadow: inset 0 0 30px rgba(0,0,0,0.5);
         }
 
-        /* --- SHOP CARDS --- */
         .shop-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 30px; margin-top: 50px; }
         .shop-card {
             background: linear-gradient(145deg, rgba(20,20,20,1) 0%, rgba(5,5,5,1) 100%);
             border: 1px solid var(--dark-gold); border-radius: 10px; padding: 40px;
-            text-align: center; transition: 0.4s; position: relative; overflow: hidden;
+            text-align: center; transition: 0.4s;
         }
-        .shop-card:hover { border-color: var(--gold); transform: translateY(-10px); box-shadow: var(--glow); }
+        .shop-card:hover { border-color: var(--gold); transform: translateY(-10px); }
         .price { font-size: 2.5rem; color: var(--gold); font-weight: 800; display: block; margin: 20px 0; }
         
         .buy-btn {
             background: var(--gold); color: black; border: none; width: 100%;
             padding: 15px; border-radius: 3px; font-weight: 800; cursor: pointer;
-            text-transform: uppercase; transition: 0.3s;
+            text-transform: uppercase; transition: 0.3s; text-decoration: none; display: block;
         }
-        .buy-btn:hover { background: #fff; letter-spacing: 1px; }
-
-        /* --- CART UI --- */
-        #cart-trigger {
-            position: fixed; bottom: 30px; right: 30px;
-            width: 70px; height: 70px; background: var(--gold);
-            border-radius: 50%; display: flex; align-items: center; justify-content: center;
-            font-size: 1.8rem; cursor: pointer; z-index: 1001; box-shadow: 0 10px 30px rgba(0,0,0,0.8);
-        }
-        #cart-count {
-            position: absolute; top: 5px; right: 5px; background: #ff0000;
-            color: white; font-size: 0.8rem; width: 22px; height: 22px;
-            border-radius: 50%; display: flex; align-items: center; justify-content: center;
-        }
+        .buy-btn:hover { background: #fff; }
 
     </style>
 </head>
@@ -148,120 +121,82 @@
     <section id="home" class="active">
         <div class="hero">
             <h1>InvestSMP</h1>
-            <p style="color: #666; letter-spacing: 5px; text-transform: uppercase;">Survival • Stocks • Economy</p>
-            
             <div class="status-badge">
-                <div class="dot"></div>
                 <span id="player-count">0</span> Players Online
             </div>
-
             <br>
             <div class="ip-card" onclick="copyIP()">invest.minekeep.gg</div>
         </div>
     </section>
 
     <section id="stats">
-        <h2 style="font-family: 'Cinzel'; color: var(--gold); text-align: center;">Market Volume</h2>
+        <h2 style="font-family: 'Cinzel'; color: var(--gold); text-align: center;">Player Count History</h2>
         <div class="chart-container">
             <canvas id="mainChart"></canvas>
         </div>
     </section>
 
     <section id="shop">
-        <h2 style="font-family: 'Cinzel'; color: var(--gold); text-align: center; font-size: 2rem;">Member Ranks</h2>
+        <h2 style="font-family: 'Cinzel'; color: var(--gold); text-align: center;">Member Ranks</h2>
         <div class="shop-grid">
             <div class="shop-card">
                 <h3>VIP</h3>
                 <span class="price">$9.99</span>
-                <p style="opacity: 0.6; margin-bottom: 20px;">Support the server and get a gold name prefix and fly in lobbies.</p>
-                <button class="buy-btn" onclick="addToCart('VIP Rank', 9.99)">Purchase</button>
+                <a href="YOUR_VIP_STRIPE_LINK" class="buy-btn">Purchase</a>
             </div>
             <div class="shop-card">
-                <div style="background: var(--gold); color: black; position: absolute; top: 15px; right: -30px; transform: rotate(45deg); width: 120px; font-size: 0.7rem; font-weight: 800;">ELITE</div>
                 <h3>MVP</h3>
                 <span class="price">$49.99</span>
-                <p style="opacity: 0.6; margin-bottom: 20px;">The ultimate status. Priority queue, specialized kits, and private market stats.</p>
-                <button class="buy-btn" onclick="addToCart('MVP Rank', 49.99)">Purchase</button>
+                <a href="YOUR_MVP_STRIPE_LINK" class="buy-btn">Purchase</a>
             </div>
         </div>
     </section>
 
     <section id="contact">
-        <div style="text-align: center; border: 1px solid var(--dark-gold); padding: 60px; background: rgba(255,255,255,0.01);">
-            <h2 style="font-family: 'Cinzel'; color: var(--gold);">Business Center</h2>
-            <p style="margin: 30px 0; opacity: 0.7;">For technical issues or billing inquiries:</p>
-            <div style="font-size: 1.8rem; color: var(--gold); font-weight: 700; letter-spacing: 1px;">admin@investsmp.gg</div>
+        <div style="text-align: center; border: 1px solid var(--dark-gold); padding: 60px;">
+            <h2 style="font-family: 'Cinzel'; color: var(--gold);">Contact</h2>
+            <div style="font-size: 1.8rem; color: var(--gold); margin-top: 20px;">admin@investsmp.gg</div>
         </div>
     </section>
-
-    <div id="cart-trigger" onclick="runCheckout()">
-        🛒 <span id="cart-count">0</span>
-    </div>
 
     <script>
         const IP = "invest.minekeep.gg";
         let historyData = JSON.parse(localStorage.getItem('is_hist')) || [];
         let activeChart = null;
-        let basket = [];
-        let lastLoggedCount = null;
 
         function switchTab(target) {
             document.querySelectorAll('section').forEach(s => s.classList.remove('active'));
             document.querySelectorAll('nav a').forEach(a => a.classList.remove('active'));
-            
             document.getElementById(target).classList.add('active');
             document.getElementById('nav-' + target).classList.add('active');
-            
             if(target === 'stats') setTimeout(renderGraph, 100);
             window.scrollTo(0,0);
         }
 
         function copyIP() {
-            navigator.clipboard.writeText(IP).then(() => alert("Server IP Copied!"));
+            navigator.clipboard.writeText(IP).then(() => alert("IP Copied!"));
         }
 
-        // --- OPTIMIZED STARS ---
-        const stars = document.getElementById('star-container');
-        const frag = document.createDocumentFragment();
-        for (let i = 0; i < 60; i++) {
-            const s = document.createElement('div');
-            s.className = 'star';
-            const size = Math.random() * 2 + 1;
-            s.style.width = size + 'px';
-            s.style.height = size + 'px';
-            s.style.top = Math.random() * 100 + 'vh';
-            s.style.left = Math.random() * 100 + 'vw';
-            frag.appendChild(s);
-        }
-        stars.appendChild(frag);
-
-        // --- LOGIC ---
         async function checkServer() {
             try {
                 const res = await fetch(`https://api.mcstatus.io/v2/status/java/${IP}`);
                 const data = await res.json();
                 const count = data.online ? data.players.online : 0;
-                
                 document.getElementById('player-count').textContent = count;
 
-                // Update graph ONLY if count changed
-                if (count !== lastLoggedCount) {
-                    const time = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+                const time = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+                if (historyData.length === 0 || count !== historyData[historyData.length - 1].p) {
                     historyData.push({ t: time, p: count });
                     if(historyData.length > 24) historyData.shift();
-                    
                     localStorage.setItem('is_hist', JSON.stringify(historyData));
-                    lastLoggedCount = count;
-
                     if(document.getElementById('stats').classList.contains('active')) renderGraph();
                 }
-            } catch(e) { console.warn("API Offline"); }
+            } catch(e) {}
         }
 
         function renderGraph() {
             const ctx = document.getElementById('mainChart').getContext('2d');
             if(activeChart) activeChart.destroy();
-
             activeChart = new Chart(ctx, {
                 type: 'line',
                 data: {
@@ -269,41 +204,33 @@
                     datasets: [{
                         data: historyData.map(d => d.p),
                         borderColor: '#D4AF37',
-                        backgroundColor: 'rgba(212, 175, 55, 0.05)',
-                        borderWidth: 3,
-                        pointRadius: 4,
-                        pointBackgroundColor: '#fff',
                         tension: 0.3,
-                        fill: true
+                        fill: true,
+                        backgroundColor: 'rgba(212, 175, 55, 0.05)'
                     }]
                 },
                 options: {
                     responsive: true,
                     maintainAspectRatio: false,
                     plugins: { legend: { display: false } },
-                    scales: {
-                        y: { beginAtZero: true, grid: { color: 'rgba(255,255,255,0.05)' }, ticks: { color: '#D4AF37' } },
-                        x: { grid: { display: false }, ticks: { color: '#666' } }
-                    }
+                    scales: { y: { beginAtZero: true, ticks: { color: '#D4AF37' } }, x: { ticks: { color: '#666' } } }
                 }
             });
         }
 
+        // Stars
+        const stars = document.getElementById('star-container');
+        for (let i = 0; i < 50; i++) {
+            const s = document.createElement('div');
+            s.className = 'star';
+            s.style.width = s.style.height = (Math.random() * 2 + 1) + 'px';
+            s.style.top = Math.random() * 100 + 'vh';
+            s.style.left = Math.random() * 100 + 'vw';
+            stars.appendChild(s);
+        }
+
         setInterval(checkServer, 30000);
         checkServer();
-
-        function addToCart(n, p) {
-            basket.push({n, p});
-            document.getElementById('cart-count').textContent = basket.length;
-        }
-
-        function runCheckout() {
-            if(!basket.length) return alert("Your basket is empty!");
-            const total = basket.reduce((acc, c) => acc + c.price, 0);
-            alert(`Proceeding to Stripe for $${total.toFixed(2)}`);
-            basket = [];
-            document.getElementById('cart-count').textContent = "0";
-        }
     </script>
 </body>
 </html>
