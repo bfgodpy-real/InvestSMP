@@ -16,7 +16,7 @@
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Montserrat', sans-serif; scroll-behavior: smooth; }
-        body { background: #000; color: white; overflow-x: hidden; }
+        body { background: #000; color: white; overflow-x: hidden; transition: filter 2s ease; }
 
         /* Star Background */
         #star-canvas { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; z-index: -1; }
@@ -43,88 +43,65 @@
             transition: 0.3s;
         }
         .logo:hover { transform: scale(1.05); filter: brightness(1.2); }
-
         nav ul { display: flex; list-style: none; gap: 40px; }
-        nav ul li a { 
-            color: #fff; text-decoration: none; font-size: 0.85rem; font-weight: 800; 
-            text-transform: uppercase; cursor: pointer; transition: 0.3s; opacity: 0.7;
-        }
+        nav ul li a { color: #fff; text-decoration: none; font-size: 0.85rem; font-weight: 800; text-transform: uppercase; cursor: pointer; transition: 0.3s; opacity: 0.7; }
         nav ul li a:hover { opacity: 1; color: var(--gold); }
 
-        /* Hero Section */
+        /* Hero */
         section { display: none; padding: 160px 20px 80px; max-width: 1200px; margin: 0 auto; min-height: 100vh; }
         section.active { display: block; animation: slideUp 0.8s ease forwards; }
         @keyframes slideUp { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
 
         .hero { text-align: center; }
-        .hero h1 { 
-            font-family: 'Cinzel', serif; font-size: clamp(3.5rem, 12vw, 6.5rem); 
-            background: var(--gold-grad); -webkit-background-clip: text; background-clip: text;
-            -webkit-text-fill-color: transparent; filter: drop-shadow(0 0 20px var(--gold-glow));
-            margin-bottom: 10px;
-        }
+        .hero h1 { font-family: 'Cinzel', serif; font-size: clamp(3.5rem, 12vw, 6.5rem); background: var(--gold-grad); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; filter: drop-shadow(0 0 20px var(--gold-glow)); margin-bottom: 10px; }
         .tagline { font-size: 1.2rem; font-weight: 800; letter-spacing: 8px; margin-bottom: 40px; color: #ccc; text-transform: uppercase; }
 
-        /* Animated Buttons */
+        /* Buttons */
         .cta-group { display: flex; gap: 20px; justify-content: center; flex-wrap: wrap; margin-bottom: 60px; }
-        .btn { 
-            position: relative; width: 300px; padding: 18px 0; border-radius: 8px; 
-            font-weight: 800; cursor: pointer; transition: 0.4s cubic-bezier(0.4, 0, 0.2, 1); 
-            font-size: 1rem; text-transform: uppercase; text-align: center; border: 2px solid transparent;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
-        }
-        .btn-gold { background: var(--gold-grad); color: black; border-color: var(--gold); }
-        .btn-gold:hover { background: transparent; color: var(--gold); transform: translateY(-5px); box-shadow: 0 10px 25px var(--gold-glow); }
-        
-        .btn-discord { background: var(--discord); color: white; border-color: var(--discord); }
-        .btn-discord:hover { background: transparent; color: var(--discord); transform: translateY(-5px); box-shadow: 0 10px 25px rgba(88, 101, 242, 0.4); }
+        .btn { position: relative; width: 300px; padding: 18px 0; border-radius: 8px; font-weight: 800; cursor: pointer; transition: 0.4s; font-size: 1rem; text-transform: uppercase; text-align: center; border: 2px solid transparent; }
+        .btn-gold { background: var(--gold-grad); color: black; }
+        .btn-gold:hover { transform: translateY(-5px); box-shadow: 0 10px 25px var(--gold-glow); }
+        .btn-discord { background: var(--discord); color: white; }
+        .btn-discord:hover { transform: translateY(-5px); box-shadow: 0 10px 25px rgba(88, 101, 242, 0.4); }
 
-        .btn .hover-text { display: none; letter-spacing: 1px; }
-        .btn:hover .default-text { display: none; }
-        .btn:hover .hover-text { display: inline; }
-
-        /* Grid Boxes */
+        /* Grid */
         .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(350px, 1fr)); gap: 30px; }
-        .box { 
-            background: var(--dark-grad); border: 1px solid rgba(212, 175, 55, 0.2); 
-            padding: 45px; border-radius: 15px; transition: 0.4s;
-            position: relative; overflow: hidden;
-        }
-        .box:hover { border-color: var(--gold); transform: translateY(-10px); box-shadow: 0 15px 40px rgba(0,0,0,0.5); }
+        .box { background: var(--dark-grad); border: 1px solid rgba(212, 175, 55, 0.2); padding: 45px; border-radius: 15px; transition: 0.4s; }
+        .box:hover { border-color: var(--gold); transform: translateY(-10px); }
         .box h3 { color: var(--gold); font-family: 'Cinzel'; margin-bottom: 15px; font-size: 1.8rem; }
         .box p { color: #aaa; line-height: 1.8; font-size: 1.05rem; }
 
-        /* Player List Visuals */
-        .player-list { display: flex; flex-wrap: wrap; gap: 15px; justify-content: center; margin-top: 30px; }
-        .player-head { 
-            display: flex; align-items: center; gap: 12px; background: rgba(255,255,255,0.03); 
-            padding: 10px 20px; border-radius: 50px; border: 1px solid rgba(255,255,255,0.1); 
-            font-weight: 700; transition: 0.3s;
-        }
-        .player-head:hover { background: rgba(212, 175, 55, 0.1); border-color: var(--gold); transform: scale(1.1); }
-        .player-head img { width: 32px; height: 32px; image-rendering: pixelated; border-radius: 4px; }
+        .player-head { display: flex; align-items: center; gap: 12px; background: rgba(255,255,255,0.03); padding: 10px 20px; border-radius: 50px; border: 1px solid rgba(255,255,255,0.1); font-weight: 700; transition: 0.3s; }
+        .player-head:hover { transform: scale(1.1); background: rgba(212,175,55,0.1); }
+        .player-head img { width: 32px; height: 32px; image-rendering: pixelated; }
 
-        .online-dot { 
-            display: inline-block; width: 10px; height: 10px; background: #00FF00; 
-            border-radius: 50%; margin-right: 8px; box-shadow: 0 0 10px #00FF00;
-            animation: pulse 2s infinite;
-        }
+        .online-dot { display: inline-block; width: 10px; height: 10px; background: #00FF00; border-radius: 50%; margin-right: 8px; box-shadow: 0 0 10px #00FF00; animation: pulse 2s infinite; }
         @keyframes pulse { 0% { opacity: 1; } 50% { opacity: 0.4; } 100% { opacity: 1; } }
 
-        .chain-divider {
-            height: 40px; background-image: url('https://www.transparentpng.com/download/gold-chain/EY6HlV-gold-chain-transparent-image.png');
-            background-repeat: repeat-x; background-size: contain; filter: drop-shadow(0 0 8px var(--gold-glow));
-            margin: 60px 0; opacity: 0.6;
-        }
+        .chain-divider { height: 40px; background-image: url('https://www.transparentpng.com/download/gold-chain/EY6HlV-gold-chain-transparent-image.png'); background-repeat: repeat-x; background-size: contain; margin: 60px 0; opacity: 0.6; }
 
-        footer { text-align: center; padding: 60px 20px; font-size: 0.9rem; color: #555; letter-spacing: 1px; }
+        footer { text-align: center; padding: 60px 20px; font-size: 0.9rem; color: #555; }
         footer span { color: var(--gold); font-weight: 800; }
+
+        /* Easter Egg Elements */
+        #secret-trigger { position: fixed; bottom: 2px; right: 2px; width: 4px; height: 4px; background: rgba(255,255,255,0.01); cursor: pointer; z-index: 10001; }
+        #nuke-btn { 
+            position: fixed; bottom: 20px; right: 20px; padding: 15px 25px; 
+            background: #ff0000; color: white; border: none; font-weight: 900; 
+            border-radius: 5px; cursor: pointer; display: none; z-index: 10002;
+            box-shadow: 0 0 20px #ff0000; animation: nuke-pulse 0.5s infinite;
+        }
+        @keyframes nuke-pulse { 0% { transform: scale(1); } 50% { transform: scale(1.1); } 100% { transform: scale(1); } }
+        
+        .blackhole-active { filter: contrast(150%) brightness(50%) hue-rotate(280deg); transition: 5s; }
     </style>
 </head>
 <body>
 
     <canvas id="star-canvas"></canvas>
     <div id="notif-container">IP COPIED TO CLIPBOARD</div>
+    <div id="secret-trigger" onclick="revealNuke()"></div>
+    <button id="nuke-btn" onclick="detonateStar()">NUKE STAR</button>
 
     <nav>
         <div class="logo" onclick="location.reload()">INVEST SMP</div>
@@ -142,7 +119,6 @@
             </div>
             <h1>InvestSMP</h1>
             <div class="tagline">Survival • Economy • PvP</div>
-            
             <div class="cta-group">
                 <div class="btn btn-gold" onclick="copyIP()">
                     <span class="default-text">IP - Copy</span>
@@ -153,20 +129,11 @@
                     <span class="hover-text">JOIN THE COMMUNITY</span>
                 </div>
             </div>
-
             <div class="grid">
-                <div class="box">
-                    <h3>Survival</h3>
-                    <p>Play classic survival with a twist. Build your legacy, form alliances, and conquer the wilderness with friends.</p>
-                </div>
-                <div class="box">
-                    <h3>Economy</h3>
-                    <p>Master the market. Use our custom stock system to trade items, flip wealth, and dominate the leaderboard.</p>
-                </div>
+                <div class="box"><h3>Survival</h3><p>Build your legacy in a competitive wilderness.</p></div>
+                <div class="box"><h3>Economy</h3><p>Master the market with our stock system.</p></div>
             </div>
-
             <div class="chain-divider"></div>
-
             <h3 style="font-family: 'Cinzel'; color: var(--gold); margin-bottom: 30px; font-size: 2rem;">Current Online</h3>
             <div id="pl-list" class="player-list"></div>
         </div>
@@ -177,36 +144,91 @@
         <div class="box" style="height: 500px; padding: 20px;"><canvas id="ch"></canvas></div>
     </section>
 
-    <footer>
-        OWNED BY <span>DUUCKSTER</span> &nbsp; | &nbsp; CRAFTED BY <span>BFGODPY</span>
-    </footer>
+    <footer>OWNED BY <span>DUUCKSTER</span> &nbsp; | &nbsp; CRAFTED BY <span>BFGODPY</span></footer>
 
     <script>
-        // Starfield Engine
         const canvas = document.getElementById('star-canvas');
         const ctx = canvas.getContext('2d');
         let w, h, stars = [], targetSpeed = 0.5, speedMult = 0.5;
+        let blackHoleMode = false;
 
         function initCanvas() {
             w = canvas.width = window.innerWidth; h = canvas.height = window.innerHeight;
-            stars = []; for(let i=0; i<400; i++) stars.push({ x: Math.random()*w-w/2, y: Math.random()*h-h/2, z: Math.random()*w, o: Math.random() });
+            stars = []; 
+            for(let i=0; i<300; i++) {
+                stars.push({
+                    x: Math.random()*w-w/2, y: Math.random()*h-h/2, z: Math.random()*w, 
+                    o: Math.random(), exploding: false, explosionSize: 0
+                });
+            }
         }
         window.addEventListener('resize', initCanvas);
 
         function updateStars() {
-            ctx.fillStyle = '#000'; ctx.fillRect(0,0,w,h);
+            ctx.fillStyle = blackHoleMode ? 'rgba(0,0,0,0.2)' : '#000'; 
+            ctx.fillRect(0,0,w,h);
+            
+            if(blackHoleMode) {
+                // Black hole drawing
+                ctx.beginPath();
+                ctx.arc(w/2, h/2, 100, 0, Math.PI*2);
+                ctx.fillStyle = '#000';
+                ctx.shadowBlur = 100; ctx.shadowColor = '#5000ff';
+                ctx.fill();
+                ctx.shadowBlur = 0;
+            }
+
             speedMult += (targetSpeed - speedMult) * 0.05;
             ctx.translate(w/2, h/2);
-            for(let s of stars) {
-                s.z -= speedMult; if(s.z <= 0) s.z = w;
-                let sx = s.x / (s.z / w), sy = s.y / (s.z / w);
-                ctx.beginPath(); ctx.strokeStyle = `rgba(212, 175, 55, ${s.o * 0.5})`; ctx.lineWidth = 2 * (1 - s.z / w);
-                ctx.moveTo(sx, sy); ctx.lineTo(s.x / ((s.z + speedMult*2)/w), s.y / ((s.z + speedMult*2)/w)); ctx.stroke();
-            }
-            ctx.setTransform(1,0,0,1,0,0); requestAnimationFrame(updateStars);
+            
+            stars.forEach((s, index) => {
+                if(s.dead) return;
+                
+                if(s.exploding) {
+                    s.explosionSize += 10;
+                    ctx.beginPath();
+                    ctx.arc(s.x/(s.z/w), s.y/(s.z/w), s.explosionSize, 0, Math.PI*2);
+                    ctx.fillStyle = `rgba(255, 100, 0, ${1 - s.explosionSize/200})`;
+                    ctx.fill();
+                    if(s.explosionSize > 200) s.dead = true;
+                } else {
+                    s.z -= speedMult; 
+                    if(s.z <= 0) s.z = w;
+                    let sx = s.x / (s.z / w), sy = s.y / (s.z / w);
+                    
+                    if(blackHoleMode) {
+                        // Sucking effect
+                        s.x *= 0.98; s.y *= 0.98;
+                    }
+
+                    ctx.beginPath();
+                    ctx.strokeStyle = blackHoleMode ? '#5000ff' : `rgba(212, 175, 55, ${s.o * 0.5})`;
+                    ctx.lineWidth = 2 * (1 - s.z / w);
+                    ctx.moveTo(sx, sy);
+                    ctx.lineTo(s.x / ((s.z + speedMult*2)/w), s.y / ((s.z + speedMult*2)/w));
+                    ctx.stroke();
+                }
+            });
+            
+            ctx.setTransform(1,0,0,1,0,0);
+            requestAnimationFrame(updateStars);
         }
 
-        // Logic Functions
+        function revealNuke() { document.getElementById('nuke-btn').style.display = 'block'; }
+
+        function detonateStar() {
+            let aliveStars = stars.filter(s => !s.exploding && !s.dead);
+            if(aliveStars.length > 0) {
+                let target = aliveStars[Math.floor(Math.random() * aliveStars.length)];
+                target.exploding = true;
+            }
+            if(aliveStars.length <= 1) {
+                blackHoleMode = true;
+                document.body.classList.add('blackhole-active');
+                document.getElementById('nuke-btn').innerText = "SYSTEM COLLAPSE";
+            }
+        }
+
         function tab(t) {
             document.querySelectorAll('section').forEach(s => s.classList.remove('active'));
             document.getElementById(t).classList.add('active');
@@ -221,73 +243,32 @@
         }
 
         function redirectConfirm(url, name) {
-            if (confirm(`Open ${name} in a new tab?`)) { window.open(url, "_blank"); }
+            if (confirm(`Open ${name}?`)) { window.open(url, "_blank"); }
         }
 
         let lastCount = -1;
-        let hist = JSON.parse(localStorage.getItem('smphist_v9')) || [];
+        let hist = JSON.parse(localStorage.getItem('smphist_v10')) || [];
         
         async function updateData() {
             try {
                 const r = await fetch('https://api.mcsrvstat.us/3/invest.minekeep.gg');
                 const d = await r.json();
-                
-                const listContainer = document.getElementById('pl-list');
-                listContainer.innerHTML = '';
-                
+                const listC = document.getElementById('pl-list');
+                listC.innerHTML = '';
                 let listArray = (d.players && d.players.list) ? d.players.list : [];
-                let manualCount = listArray.length;
-
                 listArray.forEach(p => {
                     const name = p.name || p; 
-                    listContainer.innerHTML += `
-                        <div class="player-head">
-                            <img src="https://minotar.net/helm/${name}/32" alt="">
-                            <span>${name}</span>
-                        </div>`;
+                    listC.innerHTML += `<div class="player-head"><img src="https://minotar.net/helm/${name}/32"><span>${name}</span></div>`;
                 });
-
-                document.getElementById('pc').innerText = manualCount;
-
-                // Only update graph if player count actually changes
-                if (manualCount !== lastCount) {
-                    const now = new Date().toLocaleTimeString([], {hour:'2-digit', minute:'2-digit'});
-                    hist.push({t: now, p: manualCount});
+                document.getElementById('pc').innerText = listArray.length;
+                if (listArray.length !== lastCount) {
+                    hist.push({t: new Date().toLocaleTimeString([], {hour:'2-digit', minute:'2-digit'}), p: listArray.length});
                     if(hist.length > 20) hist.shift();
-                    localStorage.setItem('smphist_v9', JSON.stringify(hist));
-                    lastCount = manualCount;
+                    localStorage.setItem('smphist_v10', JSON.stringify(hist));
+                    lastCount = listArray.length;
                     if(document.getElementById('stats').classList.contains('active')) drawChart();
                 }
-            } catch(e) { console.warn("API Error"); }
-        }
-
-        function drawChart() {
-            const chartCtx = document.getElementById('ch').getContext('2d');
-            if(window.myChart) window.myChart.destroy();
-            window.myChart = new Chart(chartCtx, {
-                type: 'line',
-                data: {
-                    labels: hist.map(x => x.t),
-                    datasets: [{ 
-                        data: hist.map(x => x.p), 
-                        borderColor: '#D4AF37', 
-                        borderWidth: 4, 
-                        pointBackgroundColor: '#D4AF37',
-                        pointRadius: 5,
-                        tension: 0.4, 
-                        fill: true, 
-                        backgroundColor: 'rgba(212,175,55,0.1)' 
-                    }]
-                },
-                options: { 
-                    responsive: true, maintainAspectRatio: false,
-                    plugins: { legend: { display: false } },
-                    scales: { 
-                        y: { beginAtZero: true, ticks: { color: '#666' }, grid: { color: 'rgba(255,255,255,0.05)' } }, 
-                        x: { ticks: { color: '#666' }, grid: { display: false } } 
-                    }
-                }
-            });
+            } catch(e) {}
         }
 
         initCanvas();
